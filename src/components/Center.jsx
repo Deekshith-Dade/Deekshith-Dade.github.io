@@ -124,7 +124,7 @@ export default function Center() {
                     height={300}
                     className="rounded-full"
                 /> */}
-                <canvas className='rounded-full' ref={canvasRef} height={400} width={400}>This</canvas>
+                <canvas className='rounded-full' ref={canvasRef} height={500} width={500}>This</canvas>
             </div>
         </div >
     );
