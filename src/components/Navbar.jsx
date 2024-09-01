@@ -21,8 +21,8 @@ export default function Navbar() {
                     <Link className="text-gray-500 hover:text-gray-800" href="/projects">
                         Projects
                     </Link>
-                    <Link className="text-gray-500 hover:text-gray-800" href="/contact">
-                        Contact
+                    <Link className="text-gray-500 hover:text-gray-800" href="/images">
+                        Images
                     </Link>
                 </div>
 
