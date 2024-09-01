@@ -71,10 +71,10 @@ export default function Center() {
         const a4 = annotate(n4, { type: 'circle', color: palette[2] });
         const ag = annotationGroup([a1, a2, a3, a4]);
         setTextColor(palette[1]);
-
+        ag.show();
 
         return () => {
-            ag.show();
+
         }
     }, [])
 
