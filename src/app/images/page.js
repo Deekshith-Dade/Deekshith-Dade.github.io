@@ -25,15 +25,15 @@ function page() {
       };
 
     const images = [
-        {"src": "/images/1_long.jpeg", "width": 300, "height": 400, "alt": "A cat"},
+        {"src": "/images/1_long.jpg", "width": 300, "height": 400, "alt": "A cat"},
 
-        {"src": "/images/2_long.jpeg", "width": 300, "height": 300, "alt": "A cat"},
+        {"src": "/images/2_long.jpg", "width": 300, "height": 300, "alt": "A cat"},
         {"src": "/images/9_wide.jpg", "width": 800, "height": 500, "alt": "A cat"},
         {"src": "/images/8_wide.jpg", "width": 800, "height": 500, "alt": "A cat"},
         {"src": "/images/4_wide.jpg", "width": 800, "height": 500, "alt": "A cat"},
         {"src": "/images/7_wide.jpg", "width": 800, "height": 500, "alt": "A cat"},
 
-        {"src": "/images/3_long.jpeg", "width": 300, "height": 400, "alt": "A cat"},
+        {"src": "/images/3_long.jpg", "width": 300, "height": 400, "alt": "A cat"},
 
         {"src": "/images/5_long.jpg", "width": 300, "height": 200, "alt": "A cat"},
 
