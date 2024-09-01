@@ -85,10 +85,10 @@ export default function Center() {
             <div className="max-w-2xl text-center md:text-left mb-8 md:mb-0">
                 <h1 className="text-3xl sm:text-6xl lg:text-6xl font-bold mb-8 mt-8">
 
-                    Hello! I'm <span className={`name`} style={{ color: textColor }}>Deekshith....</span>
+                    Hello! I&apos;m <span className={`name`} style={{ color: textColor }}>Deekshith....</span>
                 </h1>
                 <p className="text-base sm:text-lg mb-4 text-gray-400">
-                    I am currently a Masters in <span className='course'>Computer Science</span> student at the University of Utah, where I'm currenlty working as a Graduate Research Assistant at the Scientific Computing and Imaging (SCI) Institute
+                    I am currently a Masters in <span className='course'>Computer Science</span> student at the University of Utah, where I&apos;m currenlty working as a Graduate Research Assistant at the Scientific Computing and Imaging (SCI) Institute
                     My research intersets are in the field of <span className="highlight1">Computer Vision</span> using latest <span className="highlight2">Deep Learning</span>  Techniques.
                 </p>
                 <p className="text-base sm:text-lg text-gray-400">
