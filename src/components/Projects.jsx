@@ -21,9 +21,9 @@ function Projects() {
     const mainProject = projects[0];
 
     return (
-        <div className='text-4xl font-bold'>
+        <>
             <div className='flex flex-col justify-center md:flex-row md:justify-between'>
-                <h1 className='mx-auto mb-4 md:my-auto md:mx-0'>Current Project</h1>
+                <h1 className='font-bold text-4xl mx-auto mb-4 md:my-auto md:mx-0'>Current Project</h1>
                 <Link href="/projects" className="my-auto flex justify-center">
                     <div className='border-[0.15px] px-8 py-2 transition delay-150 duration-400 ease-in-out transform hover:scale-105 hover:bg-s-green hover:border-black '>See all
                     </div>
@@ -32,7 +32,7 @@ function Projects() {
 
             {mainProject && (<Link href={`/projects/${mainProject.id}`}> <ProjectItem project={mainProject} /> </Link>)}
 
-        </div>
+        </>
     )
 }
 

@@ -7,8 +7,10 @@ export default function Navbar() {
             <div className="flex justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:justify-between">
 
 
-                <div className="flex text-sm font-bold text-gray-400 sm:text-xl">
-                    Deekshith Dade
+                <div className="flex text-sm bg-white px-1 py-2 font-bold text-black sm:text-xl">
+                    <Link href="/">
+                        DEEKSHITH DADE
+                    </Link>
                 </div>
 
                 <div className="hidden md:flex space-x-4 ml-10">

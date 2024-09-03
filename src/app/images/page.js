@@ -14,6 +14,7 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import 'lightgallery/css/lg-zoom.css';
 
 import { useRef } from 'react';
+import Navbar from '@/components/Navbar';
 
 function page() {
 
@@ -43,10 +44,10 @@ function page() {
 
   return (
     <>
-    {/* Lightbox that opens on image clicks */}
+    <Navbar />
     <Masonry
     breakpointCols={breakpointColumnsObj}
-    className="my-masonry-grid"
+    className="my-masonry-grid mt-10"
     columnClassName="my-masonry-grid_column">
       {images.map((image) => (
         <Image

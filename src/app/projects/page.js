@@ -19,8 +19,8 @@ function Project() {
   return (
     <div>
         <Navbar />
-        <div className='text-4xl font-bold px-12 md:px-32 my-16'>
-            <h1 className='my-8'>All Projects</h1>
+        <div className='font-bold px-12 md:px-32 my-16'>
+            <h1 className='text-4xl my-8'>All Projects</h1>
 
             {projects.map((project, index) => (
                 <Link key={project.id} href={`/projects/${project.id}`}> <ProjectItem project={project} /> </Link>
