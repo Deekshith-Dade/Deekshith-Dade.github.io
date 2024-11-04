@@ -34,7 +34,7 @@ function HobbyHighlights() {
                 </div>
                 <div className='m-2'>
                     <h2 className='my-8 text-2xl'>I am constantly listening to </h2>
-                    <iframe style={{ borderRadius: "12px" }} src="https://open.spotify.com/embed/track/4qobOJfBSSVkUGM2pAJBiX?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    <iframe style={{ borderRadius: "12px" }} src="https://open.spotify.com/embed/track/4qobOJfBSSVkUGM2pAJBiX?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
                 <div className='m-2'>
                     <h2 className='my-8 text-2xl'>I recently loved Watching </h2>
