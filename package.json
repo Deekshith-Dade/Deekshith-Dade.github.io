@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "better-react-mathjax": "^2.0.4-beta1",
     "canvas-sketch-util": "^1.10.0",
     "lightgallery": "^2.7.2",
     "masonry-layout": "^4.2.2",

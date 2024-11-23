@@ -1,23 +1,23 @@
 [
   {
-    "id": "dolor-tes",
-    "img": "/test.jpg",
-    "date": "September, 2024",
-    "title": "Lorem Ipsum Dolor Sit Amet Consectetur",
+    "id": "aug-survey-ecg-contrastive",
+    "img": "/proj-images/aug-survey-ecg-contrastive/baseline_warping.png",
+    "date": "January, 2024 - April, 2024",
+    "title": "A Survey of Augmentation Techniques for Self-Supervised ECG Contrastive Learning",
     "category": "Contrastive Learning"
   },
   {
-    "id": "maris-kar",
+    "id": "ecg-contrastive",
     "img": "/test.jpg",
-    "date": "September, 2024",
-    "title": "Lorem Ipsum Dolor Sit Amet",
+    "date": "May, 2024 - Aug, 2024",
+    "title": "Contrastive Learning for ECG Signal Representation Learning",
     "category": "Contrastive Learning"
   },
   {
-    "id": "blud-ran",
+    "id": "ecg-explainability",
     "img": "/test.jpg",
-    "date": "September, 2024",
-    "title": "Lorem Ipsum Dolor Sit",
-    "category": "Contrastive Learning"
+    "date": "Aug, 2024 - Current",
+    "title": "ECG disease prediction explainability using WGAN ",
+    "category": "Adversarial Learning"
   }
 ]
