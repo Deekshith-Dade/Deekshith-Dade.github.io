@@ -23,8 +23,9 @@ function Page() {
         <div>
             <Navbar />
             {project &&
-                <div className='px-8 md:px-32 my-16 sm:px-12'>
-                    <h1 className='font-bold text-5xl sm:text-6xl'>{project.title}</h1>
+                <div className='px-8 md:px-16 lg:px-64 xl:px-[48rem]  my-16'>
+                    <h1 className='font-bold text-4xl sm:text-6xl'>{project.title}</h1>
+                    <a className='text-red-500' href={project.github}>Github</a>
                     <h2 className='font-bold my-6 text-3xl  sm:text-4xl sm:my-8'>Introduction</h2>
                     {/* <h3 className='my-6 text-lg sm:my-8 italic'>Sub-Section</h3> */}
                     <p className=''>The electrocardiogram (ECG) is the most common noninvasive tool to measure the electrical activity of the heart and assess cardiac health. Despite their ubiquity and utility, traditional ECG analysis methods are limited in many impactful diseases. Machine learning tools can be employed to automate task-specific detection of diseases, and to detect patterns that are ignored by traditional ECG analysis. Contemporary machine learning tools are limited by requirements for large labeled datasets, which can be scarce for rare diseases. Self-supervised learning (SSL) can address this data scarcity. We implemented the momentum contrast(MoCo) framework, a form of SSL, using a large clinical ECG dataset. We then assessed the learning using Low Left Ventricular Ejection Fraction (LVEF) Detection as the downstream task. We compared the SSL improvement of LVEF classification across different input augmentations. We observed that optimal augmentation hyperparameters varied substantially based on the training dataset size, indicating that augmentation strategies may need to be tuned based on problem and dataset size.</p>
@@ -145,7 +146,7 @@ function Page() {
 
                     <p className='my-5'>Look for more @ <a className='text-blue' href='https://cinc.org/2024/Program/accepted/223_Preprint.pdf'>A Survey of Augmentation Techniques for Enhancing ECG Representation Through Self-Supervised Contrastive Learning</a> </p>
 
-                    <h2 className='font-bold my-6 text-3xl  sm:text-4xl sm:my-8'>Augmentaions for ECGs</h2>
+                    <h2 className='font-bold my-6 text-3xl  sm:text-4xl sm:my-8'>References</h2>
 
 
                 </div>}

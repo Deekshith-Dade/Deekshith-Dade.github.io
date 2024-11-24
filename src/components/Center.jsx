@@ -88,7 +88,7 @@ export default function Center() {
                     Hello! I&apos;m <span className={`name`} style={{ color: textColor }}>Deekshith....</span>
                 </h1>
                 <p className="text-base sm:text-lg mb-4 text-gray-400">
-                    I am currently a Masters in <span className='course'>Computer Science</span> student at the University of Utah, where I&apos;m currenlty working as a Graduate Research Assistant at the Scientific Computing and Imaging (SCI) Institute
+                    I am currently a Masters in <span className='course'>Computer Science</span> student at the University of Utah, where I&apos;m currenlty working as a <a className='text-red-500' href="https://www.sci.utah.edu/people/deekshith.dade.html">Graduate Research Assistant</a> at the Scientific Computing and Imaging (SCI) Institute
                     My research intersets are in the field of <span className="highlight1">Computer Vision</span> using latest <span className="highlight2">Deep Learning</span>  Techniques.
                 </p>
                 <p className="text-base sm:text-lg text-gray-400">
@@ -107,10 +107,10 @@ export default function Center() {
                         </div>
                     </a>
 
-                    {/* <a href="https://github.com" target="_blank" className="btn-primary">
+                    <a href="https://github.com" target="_blank" className="btn-primary">
                         <div className='border-[0.15px] flex justify-between  px-8 py-2 m-1 transition delay-150 duration-400 ease-in-out transform hover:scale-105 hover:bg-s-green hover:border-black '>Github
                         </div>
-                    </a > */}
+                    </a >
 
 
 

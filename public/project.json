@@ -4,20 +4,23 @@
     "img": "/proj-images/aug-survey-ecg-contrastive/baseline_warping.png",
     "date": "January, 2024 - April, 2024",
     "title": "A Survey of Augmentation Techniques for Self-Supervised ECG Contrastive Learning",
-    "category": "Contrastive Learning"
+    "category": "Contrastive Learning",
+    "github": "https://github.com/Deekshith-Dade/ECG_MoCo"
   },
   {
     "id": "ecg-contrastive",
-    "img": "/test.jpg",
+    "img": "/proj-images/ecg-contrastive/wall.png",
     "date": "May, 2024 - Aug, 2024",
     "title": "Contrastive Learning for ECG Signal Representation Learning",
-    "category": "Contrastive Learning"
+    "category": "Contrastive Learning",
+    "github": "https://github.com/Deekshith-Dade/ecg_contrastive"
   },
   {
     "id": "ecg-explainability",
     "img": "/test.jpg",
     "date": "Aug, 2024 - Current",
     "title": "ECG disease prediction explainability using WGAN ",
-    "category": "Adversarial Learning"
+    "category": "Adversarial Learning",
+    "github": "https://github.com/Deekshith-Dade/GAN_Explainability"
   }
 ]
