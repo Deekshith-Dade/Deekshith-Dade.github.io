@@ -113,7 +113,7 @@ function Page() {
 
             <div>
               <h1 className='font-bold text-2xl sm:text-4xl mt-8 mb-2'>Projects</h1>
-              <a className='text-red-500' href="/projects">Look here!</a>
+              <a className='text-red-500 hover:underline hover:underline-offset-4' href="/projects">Look here!</a>
             </div>
           </div>
         </div >

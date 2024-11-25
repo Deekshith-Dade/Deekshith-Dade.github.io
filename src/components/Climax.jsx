@@ -27,7 +27,7 @@ function Climax() {
     ]
 
     return (
-        <div className='flex justify-center'>
+        <footer className='flex justify-center'>
             {icons && icons.map((inst, index) => {
                 return (
                     <div className='px-4 mb-8 md:px-16 md:py-8' key={index}>
@@ -43,7 +43,7 @@ function Climax() {
                     </div>
                 )
             })}
-        </div>
+        </footer>
     )
 }
 

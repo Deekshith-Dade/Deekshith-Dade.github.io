@@ -25,7 +25,7 @@ function Page() {
             {project &&
                 <div className='px-8 md:px-16 xl:px-96  my-16'>
                     <h1 className='font-bold text-4xl sm:text-6xl'>{project.title}</h1>
-                    <a className='text-red-500' href={project.github}>Github</a>
+                    <a className='text-red-500 hover:underline hover:underline-offset-4' href={project.github}>Github</a>
                     <h2 className='font-bold my-6 text-3xl  sm:text-4xl sm:my-8'>Introduction</h2>
                     {/* <h3 className='my-6 text-lg sm:my-8 italic'>Sub-Section</h3> */}
                     <p className=''>The electrocardiogram (ECG) is the most common noninvasive tool to measure the electrical activity of the heart and assess cardiac health. Despite their ubiquity and utility, traditional ECG analysis methods are limited in many impactful diseases. Machine learning tools can be employed to automate task-specific detection of diseases, and to detect patterns that are ignored by traditional ECG analysis. Contemporary machine learning tools are limited by requirements for large labeled datasets, which can be scarce for rare diseases. Self-supervised learning (SSL) can address this data scarcity. We implemented the momentum contrast(MoCo) framework, a form of SSL, using a large clinical ECG dataset. We then assessed the learning using Low Left Ventricular Ejection Fraction (LVEF) Detection as the downstream task. We compared the SSL improvement of LVEF classification across different input augmentations. We observed that optimal augmentation hyperparameters varied substantially based on the training dataset size, indicating that augmentation strategies may need to be tuned based on problem and dataset size.</p>

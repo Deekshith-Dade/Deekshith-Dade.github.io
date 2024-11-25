@@ -14,16 +14,16 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex justify-between space-x-4 md:ml-10 mt-4 md:mt-0 ">
-                    <Link className="text-gray-500 hover:text-gray-800" href="/">
+                    <Link className="text-gray-500 hover:text-gray-300 hover:underline hover:underline-offset-4" href="/">
                         Home
                     </Link>
-                    <Link className="text-gray-500 hover:text-gray-800" href="/about">
+                    <Link className="text-gray-500 hover:text-gray-300 hover:underline hover:underline-offset-4" href="/about">
                         About
                     </Link>
-                    <Link className="text-gray-500 hover:text-gray-800" href="/projects">
+                    <Link className="text-gray-500 hover:text-gray-300 hover:underline hover:underline-offset-4" href="/projects">
                         Projects
                     </Link>
-                    <Link className="text-gray-500 hover:text-gray-800" href="/images">
+                    <Link className="text-gray-500 hover:text-gray-300 hover:underline hover:underline-offset-4" href="/images">
                         Images
                     </Link>
                 </div>
