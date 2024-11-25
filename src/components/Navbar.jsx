@@ -13,7 +13,7 @@ export default function Navbar() {
                     </Link>
                 </div>
 
-                <div className="flex space-x-4 md:ml-10 mt-4 md:mt-0">
+                <div className="flex justify-between space-x-4 md:ml-10 mt-4 md:mt-0 ">
                     <Link className="text-gray-500 hover:text-gray-800" href="/">
                         Home
                     </Link>
