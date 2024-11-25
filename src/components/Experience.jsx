@@ -29,7 +29,7 @@ function Experience({ open, children, title, company, duration, icon }) {
 
                 <div className="">
                     <div className=' my-collapse' style={{ height }}>
-                        <div className="p-3">{children}</div>
+                        <div className="p-4">{children}</div>
                     </div>
                 </div>
             </div>

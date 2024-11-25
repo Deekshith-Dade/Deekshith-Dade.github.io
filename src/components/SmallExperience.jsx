@@ -11,7 +11,7 @@ function SmallExperience({ title, company, duration, icon, onClick }) {
                         alt="icon"
                         width={50}
                         height={50}
-                        className="rounded-full"
+                        className=""
                     />
                 </div>
                 <div className='basis-8/12'>

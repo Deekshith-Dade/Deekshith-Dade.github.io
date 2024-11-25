@@ -11,6 +11,7 @@ function Page() {
 
 
   const [experience, setExperience] = useState([]);
+  const [education, setEducation] = useState([]);
 
   useEffect(() => {
     // Fetch the projects data from the JSON file
@@ -18,12 +19,17 @@ function Page() {
       .then(response => response.json())
       .then(data => setExperience(data))
       .catch(error => console.error('Error fetching projects:', error));
+
+    fetch('./education.json')
+      .then(response => response.json())
+      .then(data => setEducation(data))
+      .catch(error => console.error('Error fetching projects:', error));
   }, []);
 
   return (
     <>
       <Navbar />
-      <div className='flex-row lg:flex mx-10 my-20 xl:px-20'>
+      <div className='flex-row lg:flex my-20 px-0 lg:px-16 xl:px-32'>
         <div className='basis-1/2 m-10'>
           <Image
             src={'/next.svg'}
@@ -39,7 +45,7 @@ function Page() {
 
         <div className='m-10'>
           <div className='p-8  bg-red-500 rounded-2xl'>
-            <h1>Skills</h1>
+            <h1 className='font-bold text-2xl sm:text-4xl mb-8'>Skills</h1>
             <ol className="list-disc ml-3">
               <li>Programming Languages: Python, C++, Java, JavaScript, TypeScript, Go, Node.js</li>
               <li>Data Science and Machine Learning: Statistics, Probability, Scikit-Learn, Pandas, Numpy, Matplotlib, Pyspark, OpenCV</li>
@@ -49,9 +55,9 @@ function Page() {
           </div>
 
 
-          <div className='my-32'>
-            <h1 className='font-bold text-2xl sm:text-4xl'>Experience</h1>
-            {experience.map((exp, index) => {
+          <div className='my-16'>
+            <h1 className='font-bold text-2xl sm:text-4xl my-8'>Experience</h1>
+            {experience && experience.map((exp, index) => {
               return (
                 <Experience
                   key={index}
@@ -74,17 +80,41 @@ function Page() {
 
           </div>
 
-          <hr className="border-t-[2px] border-r-green p-4"></hr>
+
           <div>
-            <h1>Education</h1>
+            <h1 className='font-bold text-2xl sm:text-4xl my-8'>Education</h1>
+            {education && education.map((edu, index) => {
+              return (
+                <Experience
+                  key={index}
+                  open={false}
+                  title={edu.title}
+                  company={edu.company}
+                  duration={edu.duration}
+                  icon={edu.icon}
+                >
+                  <ul>
+                    {edu.description.map((desc, idx) => {
+                      return (
+                        <li className='ml-4 list-disc' key={idx}>{desc}</li>
+                      )
+                    })}
+                  </ul>
+                </Experience>
+
+
+
+              )
+            })}
           </div>
 
-          <hr className="border-t-[2px] border-r-green p-4"></hr>
+
           <div>
-            <h1>Projects</h1>
+            <h1 className='font-bold text-2xl sm:text-4xl mt-8 mb-2'>Projects</h1>
+            <a className='text-red-500' href="/projects">Look here!</a>
           </div>
         </div>
-      </div>
+      </div >
     </>
   )
 }

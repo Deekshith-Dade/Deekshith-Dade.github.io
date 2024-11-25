@@ -1,0 +1,25 @@
+[
+  {
+    "title": "Masters in Computer Science",
+    "company": "University of Utah, Salt Lake City",
+    "duration": "2023 - current",
+    "icon": "/assets/uu.png",
+    "description": [
+      "GPA: 3.83/4.0",
+      "Graduate Algorithms",
+      "Natural Language Processing",
+      "Deep Learning",
+      "Computer Vision",
+      "Image Processing",
+      "Computer Architecture",
+      "Operating Systems"
+    ]
+  },
+  {
+    "title": "B.Tech in Electronics and Communication Engineering",
+    "company": "Vellore Institute of Technology, Vellore",
+    "duration": "2018 - 2022",
+    "icon": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c5/Vellore_Institute_of_Technology_seal_2017.svg/1920px-Vellore_Institute_of_Technology_seal_2017.svg.png",
+    "description": ["GPA: 8.68/10", ""]
+  }
+]
