@@ -23,7 +23,7 @@ function Page() {
         <div>
             <Navbar />
             {project &&
-                <div className='px-8 md:px-16 lg:px-64 xl:px-[48rem]  my-16'>
+                <div className='px-8 md:px-16 xl:px-96  my-16'>
                     <h1 className='font-bold text-5xl sm:text-6xl'>{project.title}</h1>
                     <a className='text-red-500' href={project.github}>Github</a>
                     <h2 className='font-bold my-6 text-3xl  sm:text-4xl sm:my-8'>Introduction</h2>

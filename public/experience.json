@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Graduate Research Assistant",
+    "company": "Scientific Computing and Imaging Institute, University of Utah",
+    "duration": "Jan 2023 - Present",
+    "icon": "/assets/sci24-white.png",
+    "description": [
+      "Performed a survey of augmentations on Electrocardiogram by implementing multiple augmentations for time series data from the literature, trained on a self-supervised momentum contrast(MoCo) framework published by Facebook AI Research(FAIR), which is set to publish in October in Computing in Cardiology Conference(CinC) 2024.",
+      "Implemented a novel self-supervised learning architecture with a sophisticated contrastive learning setup for Learning Electrocardiogram representations with unlabelled data, resulting in 10% labeled data on a pre-trained model, producing performance equivalent to a 100% labeled supervised model in the area under the receiver operating characteristic (ROC) curve (AUC) metric.",
+      "Currently working on a novel interpretability method for ECG-Classification models by modifying the Generative Adversarial Networks(GAN) system to produce interpretations as modifications to the signal."
+    ]
+  },
+  {
+    "title": "Business Technology Solutions Associate",
+    "company": "ZS Associates",
+    "duration": "Jul 2022 - Jul 2023",
+    "icon": "/assets/ZS_logo.svg",
+    "description": [
+      "Worked on company’s proprietary software - which uses advanced data processing using Hadoop - to build efficient data pipelines for client’s marketing requirements",
+      "Designed Customer centric marketing for big pharma clients based on data from various vendors.",
+      "Deployed field suggestions and resource optimized recommendations for sales representatives for multiple clients building data pipelines from scratch using pharma data from various data vendors and configured user interface through Zaidyn FI and/or Veeva CRM app for client’s sales representative’s efficient insights and usage",
+      "Built a data pipeline for providing dynamic insights for sales representatives which takes into account the actions and the feedback the representatives provide and produce more efficient actions for the next cycle of customer interactions"
+    ]
+  },
+  {
+    "title": "Business Technology Solutions Associate - Intern",
+    "company": "ZS Associates",
+    "duration": "Jan 2022 - Jul 2022",
+    "icon": "/assets/ZS_logo.svg",
+    "description": [
+      "Led the development pipeline for a client’s marketing campaign focused on promoting a new product utilizing machine learning to optimize omnichannel marketing strategies. Achieved a 20% increase in initial sales beyond projections.",
+      "Rapidly learned and integrated new tools into the development workflow and optimized existing code to streamline processes. These improvements led to around 25% reduction in deployment time, enhancing overall pipeline efficiency"
+    ]
+  }
+]
