@@ -20,7 +20,7 @@ function HobbyHighlights() {
     }, [])
 
     return (
-        <div className=''>
+        <div className='my-10'>
             <h1 className='text-4xl font-bold mx-auto mb-4 md:my-auto md:mx-0'>Hobby Highlights</h1>
             <div className='flex flex-col lg:flex-row lg:justify-around'>
                 <div className='m-2'>

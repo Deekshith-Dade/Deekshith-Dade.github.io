@@ -19,7 +19,8 @@ function Projects() {
 
     }, []);
     const len = projects.length;
-    const randInd = Math.floor(Math.random() * len);
+    let randInd = Math.floor(Math.random() * len);
+    randInd = 1;
     const mainProject = projects[randInd];
 
     return (

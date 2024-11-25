@@ -107,7 +107,7 @@ export default function Center() {
                         </div>
                     </a>
 
-                    <a href="https://github.com" target="_blank" className="btn-primary">
+                    <a href="https://github.com/deekshith-dade" target="_blank" className="btn-primary">
                         <div className='border-[0.15px] flex justify-between  px-8 py-2 m-1 transition delay-150 duration-400 ease-in-out transform hover:scale-105 hover:bg-s-green hover:border-black '>Github
                         </div>
                     </a >

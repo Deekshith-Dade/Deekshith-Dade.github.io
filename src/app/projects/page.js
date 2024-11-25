@@ -2,6 +2,7 @@
 import Navbar from '@/components/Navbar'
 import React from 'react'
 import ProjectItem from '@/components/ProjectItem'
+import Climax from '@/components/Climax';
 import { useState, useEffect } from 'react'
 import Link from 'next/link';
 
@@ -26,6 +27,7 @@ function Project() {
                 <Link key={project.id} href={`/projects/${project.id}`}> <ProjectItem project={project} /> </Link>
             ))}
         </div>
+        <Climax />
     </div>
   )
 }

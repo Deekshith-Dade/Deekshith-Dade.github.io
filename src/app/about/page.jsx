@@ -1,7 +1,7 @@
 "use client";
 import Navbar from '@/components/Navbar'
 import Experience from '@/components/Experience';
-import SmallExperience from '@/components/SmallExperience';
+import Climax from "@/components/Climax";
 import React from 'react'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
@@ -37,6 +37,7 @@ function Page() {
               alt='Profile'
               width={200}
               height={200}
+              className=''
             />
             <h1 className='font-bold text-4xl sm:text-6xl'>Deekshith Dade</h1>
             <p className='my-2 text-xl font-thin'>Over 3 years of experience in software development and research with proficiency in Deep Learning and Web Dev. Ability to
@@ -116,6 +117,7 @@ function Page() {
             </div>
           </div>
         </div >
+        <Climax />
       </div>
     </>
   )
