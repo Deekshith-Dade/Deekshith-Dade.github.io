@@ -9,11 +9,17 @@ import Link from 'next/link';
 function Project() {
     const [projects, setProjects] = useState([]);
 
+    const sortProjects = (projects) => {
+        return projects.sort((a, b) => {
+            return a.s_no - b.s_no;
+        });
+    }
+
     useEffect(() => {
         // Fetch the projects data from the JSON file
         fetch('./project.json')
             .then(response => response.json())
-            .then(data => setProjects(data))
+            .then(data => setProjects(sortProjects(data)))
             .catch(error => console.error('Error fetching projects:', error));
     }, []);
 
@@ -24,7 +30,10 @@ function Project() {
             <h1 className='text-4xl my-8'>All Projects</h1>
 
             {projects.map((project, index) => (
-                <Link key={project.id} href={`/projects/${project.id}`}> <ProjectItem project={project} /> </Link>
+                <div key={project.id}>
+                    <Link  href={`/projects/${project.id}`}> <ProjectItem project={project} /> </Link>
+                    <hr className='border-red-800 my-8 font-bold' />
+                </div>
             ))}
         </div>
         <Climax />

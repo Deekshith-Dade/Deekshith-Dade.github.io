@@ -1,5 +1,6 @@
 [
   {
+    "s_no": 4,
     "id": "aug-survey-ecg-contrastive",
     "img": "/proj-images/aug-survey-ecg-contrastive/baseline_warping.png",
     "date": "January, 2024 - April, 2024",
@@ -8,6 +9,7 @@
     "github": "https://github.com/Deekshith-Dade/ECG_MoCo"
   },
   {
+    "s_no": 2,
     "id": "ecg-contrastive",
     "img": "/proj-images/ecg-contrastive/wall.png",
     "date": "May, 2024 - Aug, 2024",
@@ -16,11 +18,21 @@
     "github": "https://github.com/Deekshith-Dade/ecg_contrastive"
   },
   {
+    "s_no": 1,
     "id": "ecg-explainability",
     "img": "/test.jpg",
     "date": "Aug, 2024 - Current",
     "title": "ECG disease prediction explainability using WGAN ",
     "category": "Adversarial Learning",
     "github": "https://github.com/Deekshith-Dade/GAN_Explainability"
+  },
+  {
+    "s_no": 3,
+    "id": "clip-finetune",
+    "img": "/proj-images/clip-finetune/finetune_wall.jpg",
+    "date": "Oct, 2024 - Dec, 2024",
+    "title": "Mars Image Captioning and Retrieval Web Application ",
+    "category": "Contrastive Learning",
+    "github": "https://github.com/Deekshith-Dade/clip-finetune"
   }
 ]
