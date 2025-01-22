@@ -32,13 +32,7 @@ function Page() {
         <Navbar />
         <div className='flex-row lg:flex my-20 px-0 lg:px-16 xl:px-32'>
           <div className='basis-1/2 m-10'>
-            <Image
-              src={'/next.svg'}
-              alt='Profile'
-              width={200}
-              height={200}
-              className=''
-            />
+
             <h1 className='font-bold text-4xl sm:text-6xl'>Deekshith Dade</h1>
             <p className='my-2 text-xl font-thin'>Over 3 years of experience in software development and research with proficiency in Deep Learning and Web Dev. Ability to
               collaborate with talented teams and contribute to cutting-edge projects, leveraging technical expertise and research acumen
