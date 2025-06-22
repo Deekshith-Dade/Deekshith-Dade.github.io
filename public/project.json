@@ -1,5 +1,15 @@
 [
   {
+    "s_no": 1,
+    "id": "ebook-reader",
+    "img": "/proj-images/ebook-reader/ebook-reader.png",
+    "date": "May, 2025 - May, 2025",
+    "title": "Ebook Reader",
+    "category": "NextJS, FastAPI",
+    "github": "https://reader.deekshith.me"
+  },
+
+  {
     "s_no": 4,
     "id": "aug-survey-ecg-contrastive",
     "img": "/proj-images/aug-survey-ecg-contrastive/baseline_warping.png",
@@ -18,7 +28,7 @@
     "github": "https://github.com/Deekshith-Dade/ecg_contrastive"
   },
   {
-    "s_no": 1,
+    "s_no": 5,
     "id": "ecg-explainability",
     "img": "/test.jpg",
     "date": "Aug, 2024 - Current",
