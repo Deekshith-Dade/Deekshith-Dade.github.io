@@ -21,7 +21,7 @@ function Page() {
     const project = projects.find(project => project.id === 'clip-finetune');
 
     return (
-        <div>
+        <div className="px-12 md:px-24 my-32">
             <Navbar />
             {project && (
                 <div className='px-8 md:px-16 xl:px-96  my-16'>

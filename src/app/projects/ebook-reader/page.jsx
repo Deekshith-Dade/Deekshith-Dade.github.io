@@ -5,7 +5,7 @@ export default function EbookReader() {
 
 
     return (
-        <div>
+        <div className="px-12 md:px-24 my-32">
             <Navbar />
             <div className="flex flex-col items-center justify-center mt-10">
                 <div className="text-center text-xl">
