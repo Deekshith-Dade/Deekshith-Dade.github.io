@@ -1,18 +1,9 @@
+"use client";
 import React from 'react'
 
 import Masonry from 'react-masonry-css';
 import Image from 'next/image';
-// Import lightgallery with a couple nice-to-have plugins
-import LightGalleryComponent from 'lightgallery/react';
-import 'lightgallery/css/lightgallery.css';
 
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import 'lightgallery/css/lg-thumbnail.css';
-
-import lgZoom from 'lightgallery/plugins/zoom';
-import 'lightgallery/css/lg-zoom.css';
-
-import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
 
 function page() {
@@ -52,11 +43,11 @@ function page() {
     ]
 
   return (
-    <>
+    <div className="min-h-screen">
     <Navbar />
     <Masonry
     breakpointCols={breakpointColumnsObj}
-    className="my-masonry-grid mt-10"
+    className="my-masonry-grid mt-24"
     columnClassName="my-masonry-grid_column">
       {images.map((image) => (
         <Image
@@ -69,7 +60,7 @@ function page() {
         />
       ))}
     </Masonry>
-  </>
+  </div>
   )
 }
 

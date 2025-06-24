@@ -13,7 +13,7 @@ function Experience({ open, children, title, company, duration, icon }) {
     useEffect(() => {
         if (isOpen) setHeight(ref.current?.getBoundingClientRect().height);
         else setHeight(0);
-    }, [isOpen]);
+    }, [isOpen, ref]);
 
     const handleFilterOpening = () => {
         setIsOpen((prev) => !prev);

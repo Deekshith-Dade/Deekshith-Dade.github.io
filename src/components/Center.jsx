@@ -79,28 +79,28 @@ export default function Center() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Content */}
-                    <div className="space-y-8 animate-fade-in">
+                    <div className="space-y-8 ">
                         <div className="space-y-4">
-                            <p className="text-primary-400 font-mono text-sm tracking-wider animate-slide-up">
+                            <p className="text-primary-400 font-mono text-sm tracking-wider animate-fade-in">
                                 Hello, I&apos;m
                             </p>
 
-                            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight animate-slide-up">
+                            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight ">
                                 <span className="name gradient-text-primary">Deekshith Dade</span>
                             </h1>
 
-                            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-gray-300 font-medium animate-slide-up">
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-gray-300 font-medium ">
                                 Computer Vision Researcher & Full-Stack Developer
                             </h2>
                         </div>
 
-                        <p className="text-lg text-gray-400 leading-relaxed max-w-2xl animate-slide-up">
+                        <p className="text-lg text-gray-400 leading-relaxed max-w-2xl ">
                             I&apos;m currently a <span className="course text-primary-400 font-semibold">Masters in Computer Science</span> student at the University of Utah,
                             working as a <a href="https://www.sci.utah.edu/people/deekshith.dade.html" className="link-primary">Graduate Research Assistant</a> at the Scientific Computing and Imaging (SCI) Institute.
                             My research focuses on <span className="highlight1 text-accent-400 font-semibold">Computer Vision</span> using cutting-edge <span className="highlight2 text-accent-400 font-semibold">Deep Learning</span> techniques.
                         </p>
 
-                        <p className="text-lg text-gray-400 leading-relaxed max-w-2xl animate-slide-up">
+                        <p className="text-lg text-gray-400 leading-relaxed max-w-2xl animate-fade-in">
                             When I&apos;m not coding or researching, you&apos;ll find me watching sci-fi movies, reading philosophical fiction,
                             capturing moments through photography, or listening to industrial rock music.
                         </p>

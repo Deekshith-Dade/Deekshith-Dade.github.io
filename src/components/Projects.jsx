@@ -4,6 +4,7 @@ import ProjectItem from './ProjectItem';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
 
 function Projects() {
     const [projects, setProjects] = useState([]);
@@ -75,10 +76,12 @@ function Projects() {
                                         {/* Project Image */}
                                         <div className="relative overflow-hidden rounded-xl">
                                             <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-xl overflow-hidden">
-                                                <img
+                                                <Image
                                                     src={mainProject.img}
                                                     alt={mainProject.title}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    width={500}
+                                                    height={500}
                                                 />
                                             </div>
                                             <div className="absolute inset-0 bg-gradient-to-t from-dark-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
