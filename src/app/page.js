@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
     <Navbar />
-    <div className="px-12 md:px-24">
+    <div className="px-4 sm:px-8 md:px-16 lg:px-24">
       <Center />
       <hr className="my-12 border-t border-gray-200"></hr>
       <Projects />

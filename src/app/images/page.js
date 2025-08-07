@@ -10,9 +10,9 @@ function page() {
 
     const breakpointColumnsObj = {
         default: 4,
-        1100: 3,
-        700: 2,
-        500: 1
+        1280: 3,
+        900: 2,
+        600: 1
       };
 
     const images = [
@@ -47,15 +47,15 @@ function page() {
     <Navbar />
     <Masonry
     breakpointCols={breakpointColumnsObj}
-    className="my-masonry-grid mt-24"
+    className="my-masonry-grid mt-24 px-4"
     columnClassName="my-masonry-grid_column">
       {images.map((image) => (
         <Image
           key={image.src}
-          className="opacity-50 hover:opacity-100 cursor-pointer m-2"
+          className="opacity-50 hover:opacity-100 cursor-pointer m-2 w-full h-auto"
           src={image.src}
           alt={image.alt}
-          width={800}
+          width={image.width}
           height={image.height}
         />
       ))}

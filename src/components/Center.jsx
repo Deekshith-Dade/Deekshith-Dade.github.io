@@ -8,57 +8,54 @@ import palettes from 'nice-color-palettes';
 
 export default function Center() {
     const canvasRef = useRef(null);
+    const containerRef = useRef(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        const container = containerRef.current;
+        if (!canvas || !container) return;
 
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'black';
-
         const palette = random.shuffle(random.pick(palettes)).slice(1, 6);
 
-        const createGrid = () => {
-            const points = [];
+        const draw = () => {
+            const dpr = window.devicePixelRatio || 1;
+            const size = container.clientWidth; // square container
+            canvas.style.width = `${size}px`;
+            canvas.style.height = `${size}px`;
+            canvas.width = Math.floor(size * dpr);
+            canvas.height = Math.floor(size * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, size, size);
+
+            const margin = Math.max(16, size * 0.1);
             const count = 20;
             for (let i = 0; i < count; i++) {
                 for (let j = 0; j < count; j++) {
                     const u = count <= 1 ? 0.5 : i / (count - 1);
                     const v = count <= 1 ? 0.5 : j / (count - 1);
                     const radius = Math.abs(random.noise2D(u, v)) * 0.005 * count;
-                    points.push({
-                        color: random.pick(palette),
-                        radius,
-                        position: [u, v]
-                    });
+                    const color = random.pick(palette);
+                    const x = lerp(margin, size - margin, u);
+                    const y = lerp(margin, size - margin, v);
+                    ctx.beginPath();
+                    ctx.arc(x, y, size * radius, 0, Math.PI * 2, false);
+                    ctx.fillStyle = color;
+                    ctx.fill();
                 }
             }
-            return points;
         };
 
-        const points = createGrid();
-        const margin = 100;
-        const width = canvas.offsetWidth;
-        const height = canvas.offsetHeight;
-
-        ctx.fillStyle = 'white';
-
-        points.forEach(data => {
-            const { color, position, radius } = data;
-            const [u, v] = position;
-            const x = lerp(margin, width - margin, u);
-            const y = lerp(margin, height - margin, v);
-
-            ctx.beginPath();
-            ctx.arc(x, y, width * radius, 0, Math.PI * 2, false);
-            ctx.fillStyle = color;
-            ctx.fill();
-        });
-
-        // Use art palette as subtle site accent (underline color)
+        // Accent color from art
         if (palette && palette.length > 1) {
             document.documentElement.style.setProperty('--art-accent', palette[1]);
         }
+
+        const observer = new ResizeObserver(() => draw());
+        observer.observe(container);
+        draw();
+
+        return () => observer.disconnect();
     }, []);
 
     return (
@@ -133,14 +130,9 @@ export default function Center() {
 
                     {/* Visual Element */}
                     <div className="flex justify-center lg:justify-end animate-fade-in">
-                        <div className="relative">
-                            <div className="absolute inset-0 w-full h-full bg-black/5 rounded-full blur-3xl animate-float"></div>
-                            <canvas
-                                ref={canvasRef}
-                                className="relative rounded-full border-2 border-gray-200 shadow-xl"
-                                height={500}
-                                width={500}
-                            />
+                        <div ref={containerRef} className="relative w-[80vw] max-w-[520px] sm:max-w-[420px] md:max-w-[520px] aspect-square">
+                            <div className="absolute inset-0 bg-black/5 rounded-full blur-3xl animate-float"></div>
+                            <canvas ref={canvasRef} className="relative rounded-full border-2 border-gray-200 shadow-xl" />
                         </div>
                     </div>
                 </div>

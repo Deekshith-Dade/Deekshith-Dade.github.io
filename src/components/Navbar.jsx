@@ -85,6 +85,7 @@ export default function Navbar() {
 
                     {/* Mobile menu button */}
                     <button
+                        aria-label={isOpen ? 'Close menu' : 'Open menu'}
                         className="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200"
                         onClick={() => setIsOpen(!isOpen)}
                     >
