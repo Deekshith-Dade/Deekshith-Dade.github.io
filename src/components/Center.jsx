@@ -1,15 +1,13 @@
 // src/app/Center.js
 "use client";
-import { ArrowRight, Download, Github, Linkedin, Mail } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { annotate, annotationGroup } from 'rough-notation';
+import { ArrowRight, Download, Github } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { lerp } from 'canvas-sketch-util/math';
 import random from 'canvas-sketch-util/random';
 import palettes from 'nice-color-palettes';
 
 export default function Center() {
     const canvasRef = useRef(null);
-    const [textColor, setTextColor] = useState('');
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -57,20 +55,9 @@ export default function Center() {
             ctx.fill();
         });
 
-        // Annotations
-        const n1 = document.querySelector('.name');
-        const n2 = document.querySelector('.course');
-        const n3 = document.querySelector('.highlight1');
-        const n4 = document.querySelector('.highlight2');
-
-        if (n1 && n2 && n3 && n4) {
-            const a1 = annotate(n1, { type: 'underline', color: palette[0] });
-            const a2 = annotate(n2, { type: 'box', color: palette[1] });
-            const a3 = annotate(n3, { type: 'circle', color: palette[2] });
-            const a4 = annotate(n4, { type: 'circle', color: palette[2] });
-            const ag = annotationGroup([a1, a2, a3, a4]);
-            setTextColor(palette[1]);
-            ag.show();
+        // Use art palette as subtle site accent (underline color)
+        if (palette && palette.length > 1) {
+            document.documentElement.style.setProperty('--art-accent', palette[1]);
         }
     }, []);
 
@@ -81,26 +68,26 @@ export default function Center() {
                     {/* Content */}
                     <div className="space-y-8 ">
                         <div className="space-y-4">
-                            <p className="text-primary-400 font-mono text-sm tracking-wider animate-fade-in">
+                            <p className="text-gray-700 font-mono text-sm tracking-wider animate-fade-in">
                                 Hello, I&apos;m
                             </p>
 
                             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight ">
-                                <span className="name gradient-text-primary">Deekshith Dade</span>
+                                <span className="name text-gray-900 art-underline">Deekshith Dade</span>
                             </h1>
 
-                            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-gray-300 font-medium ">
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-black font-medium ">
                                 Computer Vision Researcher & Full-Stack Developer
                             </h2>
                         </div>
 
-                        <p className="text-lg text-gray-400 leading-relaxed max-w-2xl ">
-                            I&apos;m currently a <span className="course text-primary-400 font-semibold">Masters in Computer Science</span> student at the University of Utah,
+                        <p className="text-lg text-black/80 leading-relaxed max-w-2xl ">
+                            I&apos;m currently a <span className="course text-gray-900 font-semibold">Masters in Computer Science</span> student at the University of Utah,
                             working as a <a href="https://www.sci.utah.edu/people/deekshith.dade.html" className="link-primary">Graduate Research Assistant</a> at the Scientific Computing and Imaging (SCI) Institute.
-                            My research focuses on <span className="highlight1 text-accent-400 font-semibold">Computer Vision</span> using cutting-edge <span className="highlight2 text-accent-400 font-semibold">Deep Learning</span> techniques.
+                            My research focuses on <span className="highlight1 text-gray-900 font-semibold">Computer Vision</span> using cutting-edge <span className="highlight2 text-gray-900 font-semibold">Deep Learning</span> techniques.
                         </p>
 
-                        <p className="text-lg text-gray-400 leading-relaxed max-w-2xl animate-fade-in">
+                        <p className="text-lg text-black/80 leading-relaxed max-w-2xl animate-fade-in">
                             When I&apos;m not coding or researching, you&apos;ll find me watching sci-fi movies, reading philosophical fiction,
                             capturing moments through photography, or listening to industrial rock music.
                         </p>
@@ -128,18 +115,18 @@ export default function Center() {
                         </div>
 
                         {/* Quick Stats */}
-                        <div className="grid grid-cols-3 gap-6 pt-8 border-t border-dark-700 animate-slide-up">
+                        <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200 animate-slide-up">
                             <div className="text-center">
-                                <div className="text-2xl font-bold text-primary-400">3+</div>
-                                <div className="text-sm text-gray-400">Years Experience</div>
+                                <div className="text-2xl font-bold text-gray-900">3+</div>
+                                <div className="text-sm text-gray-600">Years Experience</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-2xl font-bold text-primary-400">10+</div>
-                                <div className="text-sm text-gray-400">Projects</div>
+                                <div className="text-2xl font-bold text-gray-900">10+</div>
+                                <div className="text-sm text-gray-600">Projects</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-2xl font-bold text-primary-400">5+</div>
-                                <div className="text-sm text-gray-400">Technologies</div>
+                                <div className="text-2xl font-bold text-gray-900">5+</div>
+                                <div className="text-sm text-gray-600">Technologies</div>
                             </div>
                         </div>
                     </div>
@@ -147,10 +134,10 @@ export default function Center() {
                     {/* Visual Element */}
                     <div className="flex justify-center lg:justify-end animate-fade-in">
                         <div className="relative">
-                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-full blur-3xl animate-float"></div>
+                            <div className="absolute inset-0 w-full h-full bg-black/5 rounded-full blur-3xl animate-float"></div>
                             <canvas
                                 ref={canvasRef}
-                                className="relative rounded-full border-2 border-primary-500/30 shadow-2xl"
+                                className="relative rounded-full border-2 border-gray-200 shadow-xl"
                                 height={500}
                                 width={500}
                             />

@@ -42,18 +42,18 @@ function BlogPage() {
 
             <main className="pt-20">
                 {/* Hero Section */}
-                <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-dark-900/50 to-transparent">
+                <section className="py-20 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center space-y-8">
                             <div className="space-y-4 animate-fade-in">
-                                <div className="flex items-center justify-center gap-2 text-primary-400 mb-4">
+                                <div className="flex items-center justify-center gap-2 text-gray-700 mb-4">
                                     <BookOpen size={24} />
                                     <span className="text-lg font-medium">Tech Blog</span>
                                 </div>
-                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold gradient-text-primary">
+                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
                                     Thoughts & Insights
                                 </h1>
-                                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                                <p className="text-xl text-black/80 max-w-3xl mx-auto">
                                     Exploring the intersection of computer vision, deep learning, and software engineering.
                                     Sharing insights from research and practical experiences.
                                 </p>
@@ -71,11 +71,11 @@ function BlogPage() {
                                     key={post.id}
                                     className="group animate-fade-in"
                                 >
-                                    <div className="bg-dark-800/50 backdrop-blur-sm border border-dark-700 rounded-2xl p-8 hover:border-primary-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20">
+                                    <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:border-black transition-all duration-300 hover:shadow-xl">
                                         <div className="space-y-6">
                                             {/* Post Meta */}
                                             <div className="flex flex-wrap items-center gap-4 text-sm">
-                                                <span className="px-3 py-1 text-primary-400 bg-primary-500/10 rounded-full border border-primary-500/20">
+                                                <span className="px-3 py-1 text-gray-700 bg-gray-100 rounded-full border border-gray-200">
                                                     {post.category}
                                                 </span>
                                                 <div className="flex items-center gap-2 text-gray-500">
@@ -93,17 +93,17 @@ function BlogPage() {
                                             </div>
 
                                             {/* Post Title */}
-                                            <h2 className="text-2xl sm:text-3xl font-bold text-white group-hover:text-primary-400 transition-colors duration-300">
+                                            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                                                 {post.title}
                                             </h2>
 
                                             {/* Post Excerpt */}
-                                            <p className="text-gray-400 leading-relaxed text-lg">
+                                            <p className="text-black/80 leading-relaxed text-lg">
                                                 {post.excerpt}
                                             </p>
 
                                             {/* Read More */}
-                                            <div className="flex items-center text-primary-400 group-hover:text-primary-300 transition-colors duration-300">
+                                            <div className="flex items-center text-gray-900 transition-colors duration-300">
                                                 <span className="text-sm font-medium">Read Article</span>
                                                 <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                                             </div>
@@ -115,11 +115,11 @@ function BlogPage() {
 
                         {/* Coming Soon Message */}
                         <div className="text-center py-12 animate-slide-up">
-                            <div className="bg-dark-800/30 backdrop-blur-sm border border-dark-700 rounded-2xl p-8">
-                                <h3 className="text-2xl font-bold text-white mb-4">
+                            <div className="bg-white border border-gray-200 rounded-2xl p-8">
+                                <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     More Content Coming Soon
                                 </h3>
-                                <p className="text-gray-400 max-w-2xl mx-auto">
+                                <p className="text-black/80 max-w-2xl mx-auto">
                                     I&apos;m actively working on new articles about computer vision, deep learning,
                                     and software engineering. Subscribe to stay updated with the latest insights and tutorials.
                                 </p>

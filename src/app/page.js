@@ -9,9 +9,9 @@ export default function Home() {
     <Navbar />
     <div className="px-12 md:px-24">
       <Center />
-      <hr className="border-t-[2px] border-r-green p-4"></hr>
+      <hr className="my-12 border-t border-gray-200"></hr>
       <Projects />
-      <hr className="border-t-[2px] border-r-green p-4"></hr>
+      <hr className="my-12 border-t border-gray-200"></hr>
       <Climax />
     </div>
     </>

@@ -30,7 +30,7 @@ function Climax() {
     ];
 
     return (
-        <footer className="bg-dark-900/50 backdrop-blur-sm border-t border-dark-700 mt-20">
+        <footer className="bg-white border-t border-gray-200 mt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="space-y-8">
                     {/* Main Footer Content */}
@@ -38,14 +38,14 @@ function Climax() {
                         {/* Brand Section */}
                         <div className="space-y-4 animate-fade-in">
                             <div className="flex items-center space-x-2">
-                                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                                    <span className="text-white font-bold text-sm">DD</span>
+                                <div className="w-8 h-8 rounded-lg border border-gray-900 flex items-center justify-center">
+                                    <span className="text-gray-900 font-bold text-sm">DD</span>
                                 </div>
-                                <span className="text-xl font-bold gradient-text-primary">
+                                <span className="text-xl font-bold text-gray-900">
                                     Deekshith Dade
                                 </span>
                             </div>
-                            <p className="text-gray-400 leading-relaxed">
+                            <p className="text-gray-600 leading-relaxed">
                                 Computer Vision Researcher and Full-Stack Developer passionate about
                                 creating innovative solutions through cutting-edge technology.
                             </p>
@@ -53,25 +53,25 @@ function Climax() {
 
                         {/* Quick Links */}
                         <div className="space-y-4 animate-fade-in">
-                            <h3 className="text-lg font-semibold text-white">Quick Links</h3>
+                            <h3 className="text-lg font-semibold text-gray-900">Quick Links</h3>
                             <ul className="space-y-2">
                                 <li>
-                                    <a href="/about" className="text-gray-400 hover:text-primary-400 transition-colors duration-200">
+                                    <a href="/about" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
                                         About Me
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/projects" className="text-gray-400 hover:text-primary-400 transition-colors duration-200">
+                                    <a href="/projects" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
                                         Projects
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/blog" className="text-gray-400 hover:text-primary-400 transition-colors duration-200">
+                                    <a href="/blog" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
                                         Blog
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/images" className="text-gray-400 hover:text-primary-400 transition-colors duration-200">
+                                    <a href="/images" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
                                         Photography
                                     </a>
                                 </li>
@@ -80,23 +80,23 @@ function Climax() {
 
                         {/* Contact Info */}
                         <div className="space-y-4 animate-fade-in">
-                            <h3 className="text-lg font-semibold text-white">Get In Touch</h3>
+                            <h3 className="text-lg font-semibold text-gray-900">Get In Touch</h3>
                             <div className="space-y-2">
-                                <p className="text-gray-400">
-                                    <span className="text-primary-400">Email:</span> deekshithreddy1300@gmail.com
+                                <p className="text-gray-600">
+                                    <span className="text-gray-900">Email:</span> deekshithreddy1300@gmail.com
                                 </p>
-                                <p className="text-gray-400">
-                                    <span className="text-primary-400">Location:</span> Salt Lake City, UT
+                                <p className="text-gray-600">
+                                    <span className="text-gray-900">Location:</span> Salt Lake City, UT
                                 </p>
-                                <p className="text-gray-400">
-                                    <span className="text-primary-400">Institution:</span> University of Utah
+                                <p className="text-gray-600">
+                                    <span className="text-gray-900">Institution:</span> University of Utah
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     {/* Social Links */}
-                    <div className="flex flex-col items-center space-y-6 pt-8 border-t border-dark-700 animate-slide-up">
+                    <div className="flex flex-col items-center space-y-6 pt-8 border-t border-gray-200 animate-slide-up">
                         <div className="flex items-center space-x-6">
                             {socialLinks.map((social, index) => (
                                 <a
@@ -104,7 +104,7 @@ function Climax() {
                                     href={social.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`p-3 rounded-full bg-dark-800 border border-dark-600 text-gray-400 transition-all duration-300 ${social.color} hover:border-primary-500/50 hover:bg-primary-500/10 hover:scale-110`}
+                                    className={`p-3 rounded-full bg-white border border-gray-200 text-gray-500 transition-all duration-300 hover:text-gray-900 hover:border-black hover:bg-gray-50 hover:scale-110`}
                                 >
                                     <social.icon size={20} />
                                 </a>
@@ -117,7 +117,7 @@ function Climax() {
                                 © {new Date().getFullYear()} Deekshith Dade. All rights reserved.
                             </p>
                             <p className="text-gray-600 text-xs flex items-center justify-center gap-1">
-                                Made with <Heart size={12} className="text-red-500 animate-pulse" />
+                                Made with <Heart size={12} className="text-gray-500" />
                                 using Next.js & Tailwind CSS
                             </p>
                         </div>
@@ -127,5 +127,4 @@ function Climax() {
         </footer>
     );
 }
-
 export default Climax;

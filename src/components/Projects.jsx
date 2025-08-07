@@ -33,8 +33,8 @@ function Projects() {
             <section className="py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="animate-pulse">
-                        <div className="h-8 bg-dark-700 rounded w-1/3 mb-8"></div>
-                        <div className="h-64 bg-dark-700 rounded-lg"></div>
+                        <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
+                        <div className="h-64 bg-gray-200 rounded-lg"></div>
                     </div>
                 </div>
             </section>
@@ -48,10 +48,10 @@ function Projects() {
                     {/* Section Header */}
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 animate-fade-in">
                         <div className="space-y-4">
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text-primary">
+                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
                                 Featured Project
                             </h2>
-                            <p className="text-lg text-gray-400 max-w-2xl">
+                            <p className="text-lg text-black/80 max-w-2xl">
                                 Here&apos;s a highlight of my latest work in computer vision and deep learning research.
                             </p>
                         </div>
@@ -71,11 +71,11 @@ function Projects() {
                     {mainProject && (
                         <div className="animate-slide-up">
                             <Link href={`/projects/${mainProject.id}`}>
-                                <div className="group relative overflow-hidden rounded-2xl bg-dark-800/50 backdrop-blur-sm border border-dark-700 hover:border-primary-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20">
+                                <div className="group relative overflow-hidden rounded-2xl bg-white border border-gray-200 hover:border-black transition-all duration-300 hover:shadow-xl">
                                     <div className="grid lg:grid-cols-2 gap-8 p-8">
                                         {/* Project Image */}
                                         <div className="relative overflow-hidden rounded-xl">
-                                            <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-xl overflow-hidden">
+                                            <div className="aspect-video bg-gray-100 rounded-xl overflow-hidden">
                                                 <Image
                                                     src={mainProject.img}
                                                     alt={mainProject.title}
@@ -84,14 +84,14 @@ function Projects() {
                                                     height={500}
                                                 />
                                             </div>
-                                            <div className="absolute inset-0 bg-gradient-to-t from-dark-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                                         </div>
 
                                         {/* Project Content */}
                                         <div className="space-y-6 flex flex-col justify-center">
                                             <div className="space-y-4">
                                                 <div className="flex items-center gap-3">
-                                                    <span className="px-3 py-1 text-xs font-medium text-primary-400 bg-primary-500/10 rounded-full border border-primary-500/20">
+                                                    <span className="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full border border-gray-200">
                                                         {mainProject.category}
                                                     </span>
                                                     <span className="text-sm text-gray-500 font-mono">
@@ -99,18 +99,18 @@ function Projects() {
                                                     </span>
                                                 </div>
 
-                                                <h3 className="text-2xl sm:text-3xl font-bold text-white group-hover:text-primary-400 transition-colors duration-300">
+                                                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
                                                     {mainProject.title}
                                                 </h3>
 
-                                                <p className="text-gray-400 leading-relaxed">
+                                                <p className="text-gray-600 leading-relaxed">
                                                     A cutting-edge research project exploring the latest advancements in {mainProject.category.toLowerCase()}.
                                                     This work demonstrates innovative approaches to solving complex problems in computer vision and machine learning.
                                                 </p>
                                             </div>
 
                                             <div className="flex items-center gap-4 pt-4">
-                                                <div className="flex items-center text-primary-400 group-hover:text-primary-300 transition-colors duration-300">
+                                                <div className="flex items-center text-gray-900 transition-colors duration-300">
                                                     <span className="text-sm font-medium">View Project</span>
                                                     <ExternalLink size={16} className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
                                                 </div>
@@ -120,7 +120,7 @@ function Projects() {
                                                         href={mainProject.github}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
+                                                        className="text-gray-500 hover:text-gray-900 transition-colors duration-300"
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
                                                         <ExternalLink size={16} />
@@ -137,16 +137,16 @@ function Projects() {
                     {/* Quick Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 animate-slide-up">
                         <div className="card text-center">
-                            <div className="text-3xl font-bold text-primary-400 mb-2">{projects.length}</div>
-                            <div className="text-gray-400">Total Projects</div>
+                            <div className="text-3xl font-bold text-gray-900 mb-2">{projects.length}</div>
+                            <div className="text-gray-600">Total Projects</div>
                         </div>
                         <div className="card text-center">
-                            <div className="text-3xl font-bold text-primary-400 mb-2">3+</div>
-                            <div className="text-gray-400">Years Research</div>
+                            <div className="text-3xl font-bold text-gray-900 mb-2">3+</div>
+                            <div className="text-gray-600">Years Research</div>
                         </div>
                         <div className="card text-center">
-                            <div className="text-3xl font-bold text-primary-400 mb-2">5+</div>
-                            <div className="text-gray-400">Technologies</div>
+                            <div className="text-3xl font-bold text-gray-900 mb-2">5+</div>
+                            <div className="text-gray-600">Technologies</div>
                         </div>
                     </div>
                 </div>

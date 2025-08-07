@@ -38,10 +38,10 @@ function Project() {
                     <section className="py-20 px-4 sm:px-6 lg:px-8">
                         <div className="max-w-7xl mx-auto">
                             <div className="animate-pulse space-y-8">
-                                <div className="h-8 bg-dark-700 rounded w-1/3 mx-auto"></div>
+                                <div className="h-8 bg-gray-200 rounded w-1/3 mx-auto"></div>
                                 <div className="space-y-6">
                                     {[1, 2, 3].map((i) => (
-                                        <div key={i} className="h-64 bg-dark-700 rounded-lg"></div>
+                                        <div key={i} className="h-64 bg-gray-200 rounded-lg"></div>
                                     ))}
                                 </div>
                             </div>
@@ -59,18 +59,18 @@ function Project() {
             
             <main className="pt-20">
                 {/* Hero Section */}
-                <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-dark-900/50 to-transparent">
+                <section className="py-20 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center space-y-8">
                             <div className="space-y-4 animate-fade-in">
-                                <div className="flex items-center justify-center gap-2 text-primary-400 mb-4">
+                                <div className="flex items-center justify-center gap-2 text-gray-700 mb-4">
                                     <FolderOpen size={24} />
                                     <span className="text-lg font-medium">Portfolio</span>
                                 </div>
-                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold gradient-text-primary">
+                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
                                     All Projects
                                 </h1>
-                                <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                                <p className="text-xl text-black/80 max-w-3xl mx-auto">
                                     A collection of my research work, personal projects, and contributions to the field of computer vision and deep learning.
                                 </p>
                             </div>
@@ -89,7 +89,7 @@ function Project() {
                                 >
                                     <ProjectItem project={project} />
                                     {index < projects.length - 1 && (
-                                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></div>
+                                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
                                     )}
                                 </div>
                             ))}
@@ -98,16 +98,16 @@ function Project() {
                         {/* Stats Section */}
                         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 animate-slide-up">
                             <div className="card text-center">
-                                <div className="text-3xl font-bold text-primary-400 mb-2">{projects.length}</div>
-                                <div className="text-gray-400">Total Projects</div>
+                                <div className="text-3xl font-bold text-gray-900 mb-2">{projects.length}</div>
+                                <div className="text-gray-600">Total Projects</div>
                             </div>
                             <div className="card text-center">
-                                <div className="text-3xl font-bold text-primary-400 mb-2">3+</div>
-                                <div className="text-gray-400">Years Research</div>
+                                <div className="text-3xl font-bold text-gray-900 mb-2">3+</div>
+                                <div className="text-gray-600">Years Research</div>
                             </div>
                             <div className="card text-center">
-                                <div className="text-3xl font-bold text-primary-400 mb-2">5+</div>
-                                <div className="text-gray-400">Technologies</div>
+                                <div className="text-3xl font-bold text-gray-900 mb-2">5+</div>
+                                <div className="text-gray-600">Technologies</div>
                             </div>
                         </div>
                     </div>
@@ -118,5 +118,4 @@ function Project() {
         </div>
     );
 }
-
 export default Project
