@@ -622,6 +622,13 @@
     {
       "type": "paragraph",
       "text": "5x improvement over a very naive implementation is not bad, there are a bunch of other optimizations we can do in caching implementation, the literature goes so deep with variants like QuantizedCache for improving memory, SlidingWindowCache for managing large context sizes, PagedAttention, Cross-Layer KV Sharing, KV Cache Eviction Policies with Multi Query Attention (MQA), Grouped Query Attention (GQA), Sliding Window Attention, Speculative Decoding etc. Let’s keep going!"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "collapsed": true,
+      "title": "MLX async eval",
+      "code": "# Another neat trick I observed is that with the way I wrote the last for loop \n# for predicting max tokens in the decoding stage of cached generation.\n\n# The first loop I wrote is this:\nfor i in range(max_tokens):\n\t\tyield next_token.item()\n\t\tif i % 256 == 0:\n\t\t\t\tmx.clear_cache()\n\t\tnext_token = _step(next_token[None][None])\n\t\tmx.async_eval(next_token)\n\n# The current loop as you can see is:\n\tmx.async_eval(next_token)\n\tfor i in range(max_tokens):\n\t\tif i % 256 == 0:\n\t\t\tmx.clear_cache()\n\t\tnext_y = _step(next_token[None][None])\n\t\tmx.async_eval(next_y)\n\t\tyield next_token.item()\n\t\tnext_token = next_y\n\n# The bottom loop has 2x speedup compared to the top one, \n# That is because processes overlap between async_eval and yield in the faster\n# loop, whereas there is no overlap in the first for loop."
     }
   ]
 }
