@@ -1,0 +1,627 @@
+{
+  "slug": "kv-cache-llms",
+  "title": "KV Cache in Large Language Models",
+  "date": "2025-11-18",
+  "readTime": "12 min",
+  "github": "https://github.com/Deekshith-Dade/llms/tree/02ccde66f97b626372f3c1d2c4154a161b239528/src/llms/kv_cache",
+  "excerpt": "A practical guide to understanding and implementing KV Cache in large language models. Implementation is using mlx framework, a NumPy-like array framework optimized for Apple Silicon's Unified Memory Architecture.",
+  "tags": ["LLMs", "KV Cache", "MLX", "Apple Silicon"],
+  "coverImage": "/images/kv-cache.png",
+  "references": [
+    {
+      "label": "Efficiently Scaling Transformer Inference",
+      "url": "https://arxiv.org/pdf/2211.05102"
+    },
+    { "label": "MLX LM Repo", "url": "https://github.com/ml-explore/mlx-lm" },
+    {
+      "label": "Umar Jamil's Youtube",
+      "url": "https://youtu.be/Mn_9W1nCFLo?si=wT_r08q9RNwnKyAD"
+    },
+    {
+      "label": "Vizuara Youtube",
+      "url": "https://youtu.be/IDwTiS4_bKo?si=xFEl5BO-EZ9Qdzgv"
+    },
+    {
+      "label": "Julien Simon's Youtube",
+      "url": "https://youtu.be/hMs8VNRy5Ys?si=AHLwVaOX0UmJQcU5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Let’s start. Let’s learn about KV Caching, how a simple observation and a rather simple implementation can get you 5x speedup on autoregressive token generation in attention based models. Let’s also implement this using mlx, comparing a naive autoregressive loop implementation against a cached one."
+    },
+    {
+      "type": "paragraph",
+      "text": "To understand KV Cache, let’s backtrack and understand what are Keys and what are Values, why would be a need to store these values arise, what are the trade offs (there is always a trade off)."
+    },
+    {
+      "type": "paragraph",
+      "text": "I’m assuming who is reading this is familiar with basic attention mechanism and right now let’s only focus on self-attention, also in my implementations later, I will ignore attention masks, position embeddings etc which are necessary for large language models but not so much to demonstrate the use of KV Caching."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Attention Please!"
+    },
+    {
+      "type": "paragraph",
+      "text": "Okay let’s jump right in and let me spoil right away where we are saving computation by trading for a higher memory, the the region of interest for us is where we calculate these Query, Key and Value matrices from input using corresponding weight matrices Wq, Wk, and Wv and to spoil things even more we don’t have to 1) calculate all queries for every new token to predict (only latest is enough) and 2) calculate all keys and value matrices (we can save all previous keys and value matrices, only calculate the latest ones and then save). Now let’s look at some diagrams and later some code in mlx to understand things at a lower level."
+    },
+    {
+      "type": "image",
+      "src": "/blog-images/attn_main.webp",
+      "alt": "A very high level attention diagram",
+      "caption": "Attention block on a high level, which shows the matrices of interest for us!"
+    },
+    {
+      "type": "paragraph",
+      "text": "On a high level this is what happens in the attention block. @ denotes matrix multiplication here. We start with a input of dimension 4x768 which is then projected to a different dimension of three different matrices called Query, Key and Values. Queries and Keys are used to calculate attention scores, which contains information about the “relevancy” of each token with respect to another. Then we use these attention scores to modify the Value matrix and using Wout we project it to out the same dimension with which it arrives, but now since these tokens interacted with all other tokens (using dot products and scoring each other and such) this matrix now contains information about each other and this chunk of tokens as a whole."
+    },
+    {
+      "type": "paragraph",
+      "text": "Like I said before we’re saving computation at forming the matrices Q, K and V. In the diagram I’ve used 4 tokens and an embedding size of 768 as example but imagine if the context is 100K tokens and embedding dimension is 2048, each matrix multiplication is massive, and this operation happens many times, since these LLMs are stacked attention blocks with 80 layers deep or so sometimes, computation becomes massive."
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "code": [
+        "# you can calculate your model's theoretical cache size by",
+        "theoretical_cache_size = (",
+        "\tn_layers * # number of attention layers in the model",
+        "\t2 * # keys, values",
+        "\tb * # batch_size",
+        "\tseq_len * # context length",
+        "\tn_heads * # number of heads",
+        "\thead_dim * # dimension of each head",
+        "\t4 # float32 - 4 bytes, float16 - 2 bytes, ...",
+        ") # bytes"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Autoregressive Token Generation"
+    },
+    {
+      "type": "paragraph",
+      "text": "Now let’s get a bit lower level and understand how these models generate each token, one after another by looking closely at Q, K and V Matrices."
+    },
+    {
+      "type": "paragraph",
+      "text": "First let’s start with a naive generation loop and we can easily find out where the optimization comes from."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 1"
+    },
+    {
+      "type": "image",
+      "src": "/blog-images/attn_demo1.webp"
+    },
+    {
+      "type": "paragraph",
+      "text": "Let’s take a sentence “A mysterious letter arrived”, after passing through a bunch of transformer layers we get the output matrix which in the image above is of 4 x 7 dimension and to predict the next token we choose the embeddings corresponding to the last token “arrived” and project it to vocab size using a mlp layer and we get probabilities over which token to pick next and we sample over that probabilities to pick the next token, in this case it’s “in”. Now let’s generate the next token."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 2"
+    },
+    {
+      "type": "image",
+      "src": "/blog-images/attn_demo2.webp"
+    },
+    {
+      "type": "paragraph",
+      "text": "To generate the next token, what we do is simply append the token for “in” to the input tokens (”A mysterious letter arrived”) and now the current input is (”A mysterious letter arrived in”) and given this input, the model will predict the next token. Now you can see the Q, K and V matrices have one additional row/column corresponding to the new token “in” and attention matrix is of size 5x5 now, instead earlier it was 4x4. Then for the next prediction we pick the output embedding corresponding to the token “in” and get probabilities over next token and sample the next token, which in this case is “mail”. **Crucially, notice that in this second step, we recalculated the Q, K, and V values for the first four tokens (\"A mysterious letter arrived\") even though those values have not changed since Step 1. This is the massive, repeated computation we will optimize later.**"
+    },
+    {
+      "type": "paragraph",
+      "text": "Okay, let's write some code for this simple generation loop in mlx and later observe the savings."
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "title": "Transformer Implementation",
+      "collapsed": true,
+      "code": [
+        "# Transformer.py",
+        "import mlx.core as mx",
+        "import mlx.nn as nn",
+        "",
+        "class Attention(nn.Module):",
+        "\tdef __init__(self, config):",
+        "\t\tsuper().__init__()",
+        "",
+        "\t\tself.q_proj = nn.Linear(config.dim, config.dim)",
+        "\t\tself.k_proj = nn.Linear(config.dim, config.dim)",
+        "\t\tself.v_proj = nn.Linear(config.dim, config.dim)",
+        "\t\tself.out_proj = nn.Linear(config.dim, config.dim)",
+        "",
+        "\t\tself.heads = config.n_heads",
+        "\t\tself.dim_per_head = config.dim // config.n_heads",
+        "\t\tself.scale = self.dim_per_head ** -0.5",
+        "",
+        "\tdef __call__(self, x):",
+        "\t\tqueries = self.q_proj(x)",
+        "\t\tkeys = self.k_proj(x)",
+        "\t\tvalues = self.v_proj(x)",
+        "",
+        "\t\tbatch_size, seq_len, _ = x.shape",
+        "",
+        "\t\tqueries = queries.reshape(batch_size, seq_len, self.heads, self.dim_per_head).transpose(0, 2, 1, 3)",
+        "\t\tkeys = keys.reshape(batch_size, seq_len, self.heads, self.dim_per_head).transpose(0, 2, 1, 3)",
+        "\t\tvalues = values.reshape(batch_size, seq_len, self.heads, self.dim_per_head).transpose(0, 2, 1, 3)",
+        "",
+        "\t\tattn = mx.matmul(queries, keys.transpose(0, 1, 3, 2)) * self.scale",
+        "\t\tattn_scores = mx.softmax(attn, axis=-1)  # (B, H, seq_len, seq_len)",
+        "",
+        "\t\tx = mx.matmul(attn_scores, values).reshape(batch_size, seq_len, -1)",
+        "",
+        "\t\tx = self.out_proj(x)",
+        "",
+        "\t\treturn x",
+        "",
+        "class TransformerBlock(nn.Module):",
+        "\tdef __init__(self, config):",
+        "\t\tsuper().__init__()",
+        "\t\tself.attn = Attention(config)",
+        "\t\tself.mlp = MLP(config)",
+        "\t\tself.input_layernorm = nn.RMSNorm(config.dim)",
+        "\t\tself.post_attention_layernorm = nn.RMSNorm(config.dim)",
+        "",
+        "\tdef __call__(self, x):",
+        "\t\tr = self.attn(self.input_layernorm(x))",
+        "\t\th = r + x",
+        "\t\tr = self.mlp(self.post_attention_layernorm(h))",
+        "\t\tout = r + h",
+        "\t\treturn out",
+        "",
+        "class MLP(nn.Module):",
+        "\tdef __init__(self, config):",
+        "\t\tsuper().__init__()",
+        "\t\tself.dim = config.dim",
+        "\t\tself.hidden_dim = config.mlp_hidden_size",
+        "\t\tself.layer1 = nn.Linear(self.dim, self.hidden_dim)",
+        "\t\tself.layer2 = nn.Linear(self.hidden_dim, self.dim)",
+        "",
+        "\tdef __call__(self, x):",
+        "\t\treturn self.layer2(nn.silu(self.layer1(x)))",
+        "",
+        "class MiniTransformer(nn.Module):",
+        "\tdef __init__(self, config):",
+        "\t\tsuper().__init__()",
+        "\t\tself.embed = nn.Embedding(config.vocab_size, config.dim)",
+        "\t\tself.layers = [",
+        "\t\t\tTransformerBlock(config) for _ in range(config.n_layers)",
+        "\t\t]",
+        "\t\tself.lm_head = nn.Linear(config.dim, config.vocab_size)",
+        "",
+        "\tdef __call__(self, x):",
+        "\t\tz = self.embed(x)",
+        "",
+        "\t\tfor layer in self.layers:",
+        "\t\t\tz = layer(z)",
+        "\t\tlogits = self.lm_head(z)",
+        "\t\treturn logits",
+        "",
+        "\t@property",
+        "\tdef attn_layers(self):",
+        "\t\treturn self.layers",
+        "",
+        "if __name__ == \"__main__\":",
+        "\tconfig = Config()",
+        "\tbreakpoint()",
+        "\tx = mx.array([[1, 2, 3, 4]])",
+        "\tdecoder = MiniTransformer(config)",
+        "\tout = decoder(x)",
+        "\tprint(out.shape)"
+      ]
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "title": "Generation Loop",
+      "collapsed": true,
+      "code": [
+        "import mlx.core as mx",
+        "",
+        "def generate_step(",
+        "\tprompt,",
+        "\tmodel,",
+        "\t**kwargs",
+        "):",
+        "\tmax_tokens = kwargs[\"max_tokens\"]",
+        "\tinput = prompt",
+        "\tfor _ in range(max_tokens):",
+        "\t\tlogits = model(input)",
+        "\t\tlogit = logits[:, -1, :]",
+        "\t\tprobs = mx.softmax(logit)",
+        "\t\tnext_token = mx.argmax(probs)",
+        "\t\tyield next_token.item()",
+        "\t\tnext_token = mx.expand_dims(mx.array(next_token), (0, 1))",
+        "\t\tinput = mx.concatenate([input, next_token], axis=-1)",
+        "",
+        "",
+        "def naive_generate(",
+        "\tmodel,",
+        "\tprompt,",
+        "\tmax_tokens,",
+        "\t**kwargs,",
+        "):",
+        "\tkwargs[\"max_tokens\"] = max_tokens",
+        "\ttoken_generator = generate_step(prompt, model, **kwargs)",
+        "\tfor _, text in enumerate(token_generator):",
+        "\t\tyield text"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Everything I’ve explained above about obtaining logits from the model, using the latest token, obtaining probabilities over the next token and sampling the next token (greedy sampling in my case), is implemented here."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "KV Cache Optimization"
+    },
+    {
+      "type": "paragraph",
+      "text": "Now let’s take a closer look. Does the fact that we use only the embeddings of the latest token to produce a new token give us some clues about unwanted computation?"
+    },
+    {
+      "type": "image",
+      "src": "/blog-images/attn_demo3.webp",
+      "caption": "Q, K, V matrices to demonstrate redundant calculations, follow red arrows.",
+      "alt": "Q, K, V matrices to demonstrate redundant calculations"
+    },
+    {
+      "type": "paragraph",
+      "text": "**Observation 1**: If we backtrack and observe the embeddings that we want from the output matrix, which is the embeddings corresponding to the latest token “in” is obtained, we can see that it is obtained from the last row of attn matrix, which is itself obtained from last row of the query matrix, that means we’re essentially wastefully computing the full Q matrix for tokens (”A mysterious letter arrived”) which is clearly unnecessary."
+    },
+    {
+      "type": "paragraph",
+      "text": "**Observation 2**: Another observation is that if you compare the first two figures for generating token “in” and token “main”, we if focus on K and V matrices, we are calculating K and V matrices for (”A”, “mysterious”, “letter”, “arrived”) for generating token “in” and (”A”, “mysterious”, “letter”, “arrived”, “in”) for generating the next token “mail”, and you can see that for every new token generation we are wastefully computing K and V matrices from the beginning over and over again (in this case for tokens (”A”, “mysterious”, “letter”, “arrived”). Now this is redundant, what if everytime we calculate these K and V values, keep them saved and only generate K and V for the latest token and append that to previously saved K and V to proceed with attention computation."
+    },
+    {
+      "type": "image",
+      "src": "/blog-images/attn_demo4.webp",
+      "caption": "Matrices to observe, which can be saved and computed",
+      "alt": "Matrices to observe, which can be saved and computed"
+    },
+    {
+      "type": "paragraph",
+      "text": "You can see from the diagram above, since we only need the embedding information of the latest token “in” to predict the next token we compute 1.) Q values only for that token, 2.) We compute K and V values for that token and append saved KV value for previous tokens. This way as the context length for the next token generation increases we are not bottlenecked by computation since we’re essentially computing these only one token at a time."
+    },
+    {
+      "type": "paragraph",
+      "text": "Computationally while calculating `Q @ K`, we’re reducing from `(L x D @ D x L) → (1 x D @ D x L)` and at `attn_scores @ V` we’re reducing from `(L x L @ L x D) → (1 x L @ L x D)`, along with, while computing K, V from inputs, we’re reducing from `(L x D’ @ D’ x D) → (1 x D’ @ D’ x D)`."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Implementing KV Cache using MLX"
+    },
+    {
+      "type": "code",
+      "title": "Cache Implementation",
+      "collapsed": true,
+      "language": "python",
+      "code": [
+        "import mlx.core as mx",
+        "",
+        "",
+        "class _BaseCache:",
+        "\t@property",
+        "\tdef state(self):",
+        "\t\treturn (None, None)",
+        "",
+        "\t@state.setter",
+        "\tdef state(self, v):",
+        "\t\tif v is not None and v:",
+        "\t\t\traise ValueError(\"This cache has not state but state was set\")",
+        "",
+        "",
+        "class NaiveKVCache(_BaseCache):",
+        "\tdef __init__(self):",
+        "\t\tself.keys = None",
+        "\t\tself.values = None",
+        "",
+        "\tdef update_and_fetch(self, keys, values):",
+        "\t\tif self.keys is None or self.values is None:",
+        "\t\t\tself.keys = keys",
+        "\t\t\tself.values = values",
+        "\t\telse:",
+        "\t\t\tself.keys = mx.concatenate([self.keys, keys], axis=2)",
+        "\t\t\tself.values = mx.concatenate([self.values, values], axis=2)",
+        "\t\treturn self.keys, self.values",
+        "",
+        "\t@property",
+        "\tdef state(self):",
+        "\t\treturn self.keys, self.values",
+        "",
+        "\t@state.setter",
+        "\tdef state(self, v):",
+        "\t\tself.keys, self.values = v"
+      ]
+    },
+    {
+      "type": "code",
+      "title": "Attention Implementation",
+      "language": "python",
+      "collapsed": true,
+      "code": [
+        "import mlx.core as mx",
+        "import mlx.nn as nn",
+        "from llms.kv_cache.cache import NaiveKVCache",
+        "",
+        "class Config:",
+        "\tdim = 256",
+        "\tn_layers = 4",
+        "\tn_heads = 4",
+        "\tmlp_hidden_size = 4 * 256",
+        "\tvocab_size = 1000",
+        "\tmax_seq_len = 128",
+        "",
+        "class Attention(nn.Module):",
+        "\tdef __init__(self, config):",
+        "\t\tsuper().__init__()",
+        "",
+        "\t\tself.q_proj = nn.Linear(config.dim, config.dim)",
+        "\t\tself.k_proj = nn.Linear(config.dim, config.dim)",
+        "\t\tself.v_proj = nn.Linear(config.dim, config.dim)",
+        "\t\tself.out_proj = nn.Linear(config.dim, config.dim)",
+        "",
+        "\t\tself.heads = config.n_heads",
+        "\t\tself.dim_per_head = config.dim // config.n_heads",
+        "\t\tself.scale = self.dim_per_head ** -0.5",
+        "",
+        "\tdef __call__(self, x, cache=None):",
+        "\t\tqueries = self.q_proj(x)",
+        "\t\tkeys = self.k_proj(x)",
+        "\t\tvalues = self.v_proj(x)",
+        "",
+        "\t\tbatch_size, seq_len, _ = x.shape",
+        "",
+        "\t\tqueries = queries.reshape(batch_size, seq_len, self.heads, self.dim_per_head).transpose(0, 2, 1, 3)",
+        "\t\tkeys = keys.reshape(batch_size, seq_len, self.heads, self.dim_per_head).transpose(0, 2, 1, 3)",
+        "\t\tvalues = values.reshape(batch_size, seq_len, self.heads, self.dim_per_head).transpose(0, 2, 1, 3)",
+        "",
+        "\t\tif cache is not None:",
+        "\t\t\tkeys, values = cache.update_and_fetch(keys, values)",
+        "",
+        "\t\tattn = mx.matmul(queries, keys.transpose(0, 1, 3, 2)) * self.scale",
+        "\t\tattn_scores = mx.softmax(attn, axis=-1)  # (B, H, seq_len, seq_len)",
+        "",
+        "\t\tx = mx.matmul(attn_scores, values).reshape(batch_size, seq_len, -1)",
+        "",
+        "\t\tx = self.out_proj(x)",
+        "",
+        "\t\treturn x",
+        "",
+        "class TransformerBlock(nn.Module):",
+        "\tdef __init__(self, config):",
+        "\t\tsuper().__init__()",
+        "\t\tself.attn = Attention(config)",
+        "\t\tself.mlp = MLP(config)",
+        "\t\tself.input_layernorm = nn.RMSNorm(config.dim)",
+        "\t\tself.post_attention_layernorm = nn.RMSNorm(config.dim)",
+        "",
+        "\tdef __call__(self, x, cache=None):",
+        "\t\tr = self.attn(self.input_layernorm(x), cache=cache)",
+        "\t\th = r + x",
+        "\t\tr = self.mlp(self.post_attention_layernorm(h))",
+        "\t\tout = r + h",
+        "\t\treturn out",
+        "",
+        "class MiniTransformer(nn.Module):",
+        "\tdef __init__(self, config):",
+        "\t\tsuper().__init__()",
+        "\t\tself.embed = nn.Embedding(config.vocab_size, config.dim)",
+        "\t\tself.layers = [",
+        "\t\t\tTransformerBlock(config) for _ in range(config.n_layers)",
+        "\t\t]",
+        "\t\tself.lm_head = nn.Linear(config.dim, config.vocab_size)",
+        "",
+        "\tdef __call__(self, x, caches=None):",
+        "\t\tz = self.embed(x)",
+        "",
+        "\t\tif caches is None:",
+        "\t\t\tcaches = [None] * len(self.layers)",
+        "",
+        "\t\tfor layer, cache in zip(self.layers, caches):",
+        "\t\t\tz = layer(z, cache)",
+        "\t\tlogits = self.lm_head(z)",
+        "\t\treturn logits",
+        "",
+        "\t@property",
+        "\tdef attn_layers(self):",
+        "\t\treturn self.layers",
+        "",
+        "\tdef make_cache(self):",
+        "\t\treturn [",
+        "\t\t\tNaiveKVCache()",
+        "\t\t\tfor _ in self.attn_layers",
+        "\t\t]"
+      ]
+    },
+    {
+      "type": "code",
+      "title": "Generation Loop",
+      "collapsed": true,
+      "language": "python",
+      "code": [
+        "def naive_cached_generate(",
+        "\tmodel,",
+        "\tprompt,",
+        "\tmax_tokens,",
+        "\tcaches,",
+        "\t**kwargs,",
+        "):",
+        "\t# Prefill Stage",
+        "\ttotal_tokens = prompt.shape[-1]",
+        "\tprocessed_tokens = 0",
+        "\ttokens_per_step = 32",
+        "",
+        "\tdef _step(input_tokens):",
+        "\t\tlogits = model(input_tokens)",
+        "\t\tlogit = logits[:, -1, :]",
+        "\t\tprobs = mx.softmax(logit)",
+        "\t\t# greedy sampling",
+        "\t\tnext_token = mx.argmax(probs)",
+        "\t\treturn next_token",
+        "",
+        "\twhile total_tokens - processed_tokens > 1:",
+        "\t\trem_tokens_to_fill = (total_tokens - processed_tokens) - 1",
+        "\t\tnum_tokens = min(tokens_per_step, rem_tokens_to_fill)",
+        "\t\tcurrent_tokens = prompt[:, :num_tokens]",
+        "\t\t# These tokens k and v values get prefilled in",
+        "\t\t# respective transformer blocks cache",
+        "\t\tmodel(current_tokens, caches)",
+        "\t\tmx.eval([c.state for c in caches])",
+        "\t\tprocessed_tokens += num_tokens",
+        "",
+        "\t\tprompt = prompt[:, num_tokens:]",
+        "\t\tmx.clear_cache()",
+        "",
+        "\t# Decoding Starts",
+        "\t# This leaves us with one token (in user prompt)",
+        "\t# from which we can start to predict next token",
+        "\tnext_token = _step(prompt)",
+        "\t# First token predicted from the user prompt",
+        "",
+        "\t# Subsequent predictions, one token at a time, cache has previous history",
+        "\tmx.async_eval(next_token)",
+        "\tfor i in range(max_tokens):",
+        "\t\tif i % 256 == 0:",
+        "\t\t\tmx.clear_cache()",
+        "\t\tnext_y = _step(next_token[None][None])",
+        "\t\tmx.async_eval(next_y)",
+        "\t\tyield next_token.item()",
+        "\t\tnext_token = next_y"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "This implementation has a naive KV cache implementation, this setup has very minor changes to the model"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "The `make_cache` function, returns cache objects per transformer layer, which we can package and pass corresponding cache object along with the layer to ensuring that each layer stores its own KV values from the tokens",
+        "Inside the Attention block, we use `cache.update_and_fetch(keys, values)`. This function is responsible for (a) saving the newly computed `K` and `V` for the current token, and (b) returning the concatenated tensor of all previous and current `K` and `V` to be used in the dot product with the query."
+      ]
+    },
+    {
+      "type": "callout",
+      "title": "MLX Lazy Evaluation",
+      "text": "Are you surprised by this mx.async_eval and mx.eval in the implementation. Look up lazy evaluation in mlx. It’s very cool, so for any operation `y = fun(x)` the function is not actually executed and y doesn't have a value yet, a computation graph is built and that's it. It is executed only when `eval` is called on the value, or if we print the value, if we saving the value or calling `.item()` on the array."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Prefill and Decode"
+    },
+    {
+      "type": "paragraph",
+      "text": "The other interesting thing at the generation loop using caches is, we can divide the generation phase into two stages. Prefill and Decode."
+    },
+    {
+      "type": "paragraph",
+      "text": "Once the user provides a prompt which contains n tokens, we can prefill the cache with KV values of these tokens and since we are not restricted with autoregression here, we can process and save KVs for bunch of tokens at once. "
+    },
+    {
+      "type": "paragraph",
+      "text": "Once we prefill the cache for n-1 tokens, we use that last token to start the decoding process where the autoregressive nature kicks in and as each token is passed through the model it gets saved in the cache objects and for next generation, we will only need the latest generated token to generate the next one."
+    },
+    {
+      "type": "paragraph",
+      "text": "You can observe this prefill and decode stages in the `naive_cached_generate` function."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Performance"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "collapsed": true,
+      "title": "Token Generation Speed",
+      "code": [
+        "import time",
+        "from functools import partial",
+        "import mlx.core as mx",
+        "from llms.kv_cache.generate import naive_generate, naive_cached_generate",
+        "from llms.kv_cache.transformer import Config, MiniTransformer",
+        "",
+        "",
+        "def measure_model_performance(use_cache=True):",
+        "\tconfig = Config()",
+        "\tmodel = MiniTransformer(config)",
+        "\tmax_tokens = 128",
+        "",
+        "\ttoken_generator = None",
+        "\tif use_cache:",
+        "\t\ttoken_generator = partial(",
+        "\t\t\tnaive_cached_generate,",
+        "\t\t\tmodel,",
+        "\t\t\tmax_tokens=max_tokens,",
+        "\t\t)",
+        "\telse:",
+        "\t\ttoken_generator = partial(",
+        "\t\t\tnaive_generate,",
+        "\t\t\tmodel,",
+        "\t\t\tmax_tokens=max_tokens",
+        "\t\t)",
+        "",
+        "\ttimes = []",
+        "\tfor i in range(20):",
+        "\t\tstart = time.perf_counter()",
+        "\t\tprompt = mx.random.randint(0, 100, (1, 80))",
+        "\t\tcaches = None",
+        "\t\tif use_cache:",
+        "\t\t\tcaches = model.make_cache()",
+        "\t\tfor out in token_generator(prompt=prompt, caches=caches):",
+        "\t\t\tpass",
+        "\t\t\t# print(out, flush=True, end=\" \")",
+        "\t\tend = time.perf_counter()",
+        "\t\tif i > 2:",
+        "\t\t\ttimes.append(end-start)",
+        "",
+        "\treturn times",
+        "",
+        "",
+        "def main():",
+        "",
+        "\tnaive_times = measure_model_performance(use_cache=False)",
+        "\tprint(f\"Generation Time Without KV Cache: {mx.array(naive_times).mean().item()}\")",
+        "",
+        "\tcached_times = measure_model_performance(use_cache=True)",
+        "\tprint(f\"Generation Time KV Cache: {mx.array(cached_times).mean().item()}\")",
+        "",
+        "",
+        "if __name__ == \"__main__\":",
+        "\tmain()"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "`Generation Time Without KV Cache:` 0.183353s"
+    },
+    {
+      "type": "paragraph",
+      "text": "`Generation Time KV Cache:` 0.037206"
+    },
+    {
+      "type": "paragraph",
+      "text": "`Speedup: 4.928026138343503x`, on M3 Pro Macbook"
+    },
+    {
+      "type": "paragraph",
+      "text": "5x improvement over a very naive implementation is not bad, there are a bunch of other optimizations we can do in caching implementation, the literature goes so deep with variants like QuantizedCache for improving memory, SlidingWindowCache for managing large context sizes, PagedAttention, Cross-Layer KV Sharing, KV Cache Eviction Policies with Multi Query Attention (MQA), Grouped Query Attention (GQA), Sliding Window Attention, Speculative Decoding etc. Let’s keep going!"
+    }
+  ]
+}

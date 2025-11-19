@@ -1,10 +1,8 @@
-// src/app/Center.js
 "use client";
-import { ArrowRight, Download, Github } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-import { lerp } from 'canvas-sketch-util/math';
-import random from 'canvas-sketch-util/random';
-import palettes from 'nice-color-palettes';
+import Link from "next/link";
+import { useEffect, useRef } from "react";
+import { lerp } from "canvas-sketch-util/math";
+import random from "canvas-sketch-util/random";
 
 export default function Center() {
     const canvasRef = useRef(null);
@@ -15,41 +13,42 @@ export default function Center() {
         const container = containerRef.current;
         if (!canvas || !container) return;
 
-        const ctx = canvas.getContext('2d');
-        const palette = random.shuffle(random.pick(palettes)).slice(1, 6);
-
+        const ctx = canvas.getContext("2d");
         const draw = () => {
             const dpr = window.devicePixelRatio || 1;
-            const size = container.clientWidth; // square container
+            const size = container.clientWidth;
             canvas.style.width = `${size}px`;
             canvas.style.height = `${size}px`;
             canvas.width = Math.floor(size * dpr);
             canvas.height = Math.floor(size * dpr);
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             ctx.clearRect(0, 0, size, size);
+            ctx.fillStyle = "#0a0a0a";
+            ctx.fillRect(0, 0, size, size);
 
-            const margin = Math.max(16, size * 0.1);
-            const count = 20;
+            const margin = size * 0.12;
+            const count = 26;
             for (let i = 0; i < count; i++) {
                 for (let j = 0; j < count; j++) {
                     const u = count <= 1 ? 0.5 : i / (count - 1);
                     const v = count <= 1 ? 0.5 : j / (count - 1);
-                    const radius = Math.abs(random.noise2D(u, v)) * 0.005 * count;
-                    const color = random.pick(palette);
+                    const noise = Math.abs(random.noise2D(u * 1.5, v * 1.5));
+                    const radius = noise * 0.006 * count;
                     const x = lerp(margin, size - margin, u);
                     const y = lerp(margin, size - margin, v);
                     ctx.beginPath();
                     ctx.arc(x, y, size * radius, 0, Math.PI * 2, false);
-                    ctx.fillStyle = color;
+                    ctx.fillStyle = `rgba(255,255,255,${0.08 + noise * 0.25})`;
                     ctx.fill();
                 }
             }
-        };
 
-        // Accent color from art
-        if (palette && palette.length > 1) {
-            document.documentElement.style.setProperty('--art-accent', palette[1]);
-        }
+            ctx.strokeStyle = "rgba(255,255,255,0.2)";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, size * 0.38, 0, Math.PI * 2);
+            ctx.stroke();
+        };
 
         const observer = new ResizeObserver(() => draw());
         observer.observe(container);
@@ -58,85 +57,76 @@ export default function Center() {
         return () => observer.disconnect();
     }, []);
 
+    const stats = [
+        { label: "Years in research", value: "3+" },
+        { label: "Projects shipped", value: "10+" },
+        { label: "Disciplines", value: "Vision · Agents" },
+    ];
+
     return (
-        <div className="min-h-screen flex items-center justify-center pt-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    {/* Content */}
-                    <div className="space-y-8 ">
-                        <div className="space-y-4">
-                            <p className="text-gray-700 font-mono text-sm tracking-wider animate-fade-in">
-                                Hello, I&apos;m
-                            </p>
-
-                            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight ">
-                                <span className="name text-gray-900 art-underline">Deekshith Dade</span>
-                            </h1>
-
-                            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-black font-medium ">
-                                Computer Vision Researcher & Full-Stack Developer
-                            </h2>
-                        </div>
-
-                        <p className="text-lg text-black/80 leading-relaxed max-w-2xl ">
-                            I&apos;m currently a <span className="course text-gray-900 font-semibold">Masters in Computer Science</span> student at the University of Utah,
-                            working as a <a href="https://www.sci.utah.edu/people/deekshith.dade.html" className="link-primary">Graduate Research Assistant</a> at the Scientific Computing and Imaging (SCI) Institute.
-                            My research focuses on <span className="highlight1 text-gray-900 font-semibold">Computer Vision</span> using cutting-edge <span className="highlight2 text-gray-900 font-semibold">Deep Learning</span> techniques.
+        <section className="relative flex min-h-[80vh] items-center pt-32">
+            <div className="mx-auto max-w-4xl px-6">
+                <div className="flex flex-col items-center space-y-12 text-center">
+                    <div className="space-y-4">
+                        <p className="tagline text-white/40">University of Utah · SCI Institute</p>
+                        <h1 className="text-4xl font-medium tracking-tight text-white sm:text-5xl lg:text-6xl">
+                            Deekshith Dade
+                        </h1>
+                        <p className="mx-auto max-w-2xl text-lg text-white/70">
+                            AI specialist focused on computer vision research, data-centric agentic systems, and
+                            streamlined product delivery for enterprise teams.
                         </p>
+                    </div>
 
-                        <p className="text-lg text-black/80 leading-relaxed max-w-2xl animate-fade-in">
-                            When I&apos;m not coding or researching, you&apos;ll find me watching sci-fi movies, reading philosophical fiction,
-                            capturing moments through photography, or listening to industrial rock music.
-                        </p>
-
-                        {/* Action Buttons */}
-                        <div className="flex flex-wrap gap-4 animate-slide-up">
-                            <a
-                                href="/deekshith_resume.pdf"
-                                className="btn-primary group"
-                            >
-                                <Download size={18} className="mr-2" />
-                                Download CV
-                                <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                            </a>
-
-                            <a
-                                href="https://github.com/deekshith-dade"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-secondary group"
-                            >
-                                <Github size={18} className="mr-2" />
-                                View Projects
-                            </a>
-                        </div>
-
-                        {/* Quick Stats */}
-                        <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200 animate-slide-up">
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-gray-900">3+</div>
-                                <div className="text-sm text-gray-600">Years Experience</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-gray-900">10+</div>
-                                <div className="text-sm text-gray-600">Projects</div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-2xl font-bold text-gray-900">5+</div>
-                                <div className="text-sm text-gray-600">Technologies</div>
-                            </div>
+                    <div className="relative">
+                        <div
+                            ref={containerRef}
+                            className="relative mx-auto aspect-square w-48 rounded-2xl border border-white/10 p-4"
+                        >
+                            <canvas
+                                ref={canvasRef}
+                                className="h-full w-full rounded-xl border border-white/10 bg-[var(--night)]"
+                            />
                         </div>
                     </div>
 
-                    {/* Visual Element */}
-                    <div className="flex justify-center lg:justify-end animate-fade-in">
-                        <div ref={containerRef} className="relative w-[80vw] max-w-[520px] sm:max-w-[420px] md:max-w-[520px] aspect-square">
-                            <div className="absolute inset-0 bg-black/5 rounded-full blur-3xl animate-float"></div>
-                            <canvas ref={canvasRef} className="relative rounded-full border-2 border-gray-200 shadow-xl" />
+                    <div className="w-full max-w-2xl space-y-8">
+                        <div className="rounded-[32px] border border-white/10 p-6 text-left">
+                            <p className="text-xs uppercase tracking-[0.3em] text-white/40">About</p>
+                            <p className="mt-3 text-base text-white/75">
+                                Over three years of building deep learning pipelines, leading advertising technology
+                                initiatives, and collaborating with research labs to translate algorithms into
+                                production software. I thrive in minimal, purposeful tooling and bring that mindset to
+                                every project.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-wrap justify-center gap-3 text-xs uppercase tracking-[0.35em]">
+                            <Link
+                                href="/projects"
+                                className="rounded-full border border-white/40 px-6 py-3 text-white hover:border-white"
+                            >
+                                View Projects
+                            </Link>
+                            <Link
+                                href="/deekshith_resume.pdf"
+                                className="rounded-full border border-white/20 px-6 py-3 text-white/70 hover:text-white"
+                            >
+                                Download CV
+                            </Link>
+                        </div>
+
+                        <div className="grid gap-6 sm:grid-cols-3">
+                            {stats.map((stat) => (
+                                <div key={stat.label} className="space-y-2 border-l border-white/15 pl-4 text-left">
+                                    <p className="text-2xl font-semibold text-white">{stat.value}</p>
+                                    <p className="text-xs uppercase tracking-[0.3em] text-white/50">{stat.label}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

@@ -1,0 +1,21 @@
+<svg width="960" height="480" viewBox="0 0 960 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="480" rx="32" fill="#050E23"/>
+  <rect x="120" y="120" width="240" height="240" rx="24" stroke="white" stroke-opacity="0.3" stroke-width="2" fill="#0A1733"/>
+  <rect x="360" y="120" width="240" height="240" rx="24" stroke="#4DA3FF" stroke-opacity="0.5" stroke-width="2" fill="none" stroke-dasharray="10 12"/>
+  <rect x="600" y="120" width="240" height="240" rx="24" stroke="white" stroke-opacity="0.3" stroke-width="2" fill="#0A1733"/>
+  <circle cx="240" cy="240" r="32" fill="#4DA3FF" fill-opacity="0.4" stroke="#4DA3FF" stroke-width="2"/>
+  <circle cx="720" cy="240" r="32" fill="#FFB347" fill-opacity="0.15" stroke="#FFB347" stroke-width="2"/>
+  <path d="M280 240H360" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="6 10" marker-end="url(#arrow)"/>
+  <path d="M600 240H640" stroke="white" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="6 10" marker-end="url(#arrow)"/>
+  <path d="M480 180V150" stroke="#4DA3FF" stroke-width="2" stroke-dasharray="6 8" marker-end="url(#arrow)"/>
+  <path d="M480 300V330" stroke="#4DA3FF" stroke-width="2" stroke-dasharray="6 8" marker-end="url(#arrow)"/>
+  <text x="210" y="330" fill="white" fill-opacity="0.6" font-family="Space Grotesk" font-size="14" letter-spacing="0.2em">TASK</text>
+  <text x="640" y="330" fill="white" fill-opacity="0.6" font-family="Space Grotesk" font-size="14" letter-spacing="0.2em">TASK</text>
+  <text x="410" y="390" fill="#4DA3FF" fill-opacity="0.8" font-family="Space Grotesk" font-size="14" letter-spacing="0.3em">EVENT LOOP</text>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="white" fill-opacity="0.5" />
+    </marker>
+  </defs>
+</svg>
+

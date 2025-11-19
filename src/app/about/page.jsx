@@ -42,10 +42,10 @@ function Page() {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <main className="pt-20">
+      <main className="flex-1 pt-20">
         {/* Hero Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">

@@ -1,130 +1,53 @@
-import React from 'react';
-import { Github, Linkedin, Mail, Instagram, Heart } from 'lucide-react';
+import { Github, Linkedin, Mail, Instagram } from "lucide-react";
+import Image from "next/image";
+
+const socials = [
+  { icon: Linkedin, url: "https://www.linkedin.com/in/deekshith-dade/", label: "LinkedIn" },
+  { icon: Github, url: "https://github.com/deekshith-dade", label: "GitHub" },
+  { icon: Instagram, url: "https://www.instagram.com/momento_diei/", label: "Instagram" },
+];
 
 function Climax() {
-    const socialLinks = [
-        {
-            icon: Linkedin,
-            url: 'https://www.linkedin.com/in/deekshith-dade/',
-            label: 'LinkedIn',
-            color: 'hover:text-blue-400'
-        },
-        {
-            icon: Github,
-            url: 'https://github.com/deekshith-dade',
-            label: 'GitHub',
-            color: 'hover:text-gray-300'
-        },
-        {
-            icon: Mail,
-            url: 'mailto:deekshithreddy1300@gmail.com',
-            label: 'Email',
-            color: 'hover:text-red-400'
-        },
-        {
-            icon: Instagram,
-            url: 'https://www.instagram.com/momento_diei/',
-            label: 'Instagram',
-            color: 'hover:text-pink-400'
-        },
-    ];
-
-    return (
-        <footer className="bg-white border-t border-gray-200 mt-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="space-y-8">
-                    {/* Main Footer Content */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Brand Section */}
-                        <div className="space-y-4 animate-fade-in">
-                            <div className="flex items-center space-x-2">
-                                <div className="w-8 h-8 rounded-lg border border-gray-900 flex items-center justify-center">
-                                    <span className="text-gray-900 font-bold text-sm">DD</span>
-                                </div>
-                                <span className="text-xl font-bold text-gray-900">
-                                    Deekshith Dade
-                                </span>
-                            </div>
-                            <p className="text-gray-600 leading-relaxed">
-                                Computer Vision Researcher and Full-Stack Developer passionate about
-                                creating innovative solutions through cutting-edge technology.
-                            </p>
-                        </div>
-
-                        {/* Quick Links */}
-                        <div className="space-y-4 animate-fade-in">
-                            <h3 className="text-lg font-semibold text-gray-900">Quick Links</h3>
-                            <ul className="space-y-2">
-                                <li>
-                                    <a href="/about" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                                        About Me
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/projects" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                                        Projects
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/blog" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                                        Blog
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/images" className="text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                                        Photography
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Contact Info */}
-                        <div className="space-y-4 animate-fade-in">
-                            <h3 className="text-lg font-semibold text-gray-900">Get In Touch</h3>
-                            <div className="space-y-2">
-                                <p className="text-gray-600">
-                                    <span className="text-gray-900">Email:</span> deekshithreddy1300@gmail.com
-                                </p>
-                                <p className="text-gray-600">
-                                    <span className="text-gray-900">Location:</span> Salt Lake City, UT
-                                </p>
-                                <p className="text-gray-600">
-                                    <span className="text-gray-900">Institution:</span> University of Utah
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Social Links */}
-                    <div className="flex flex-col items-center space-y-6 pt-8 border-t border-gray-200 animate-slide-up">
-                        <div className="flex items-center space-x-6">
-                            {socialLinks.map((social, index) => (
-                                <a
-                                    key={social.url}
-                                    href={social.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`p-3 rounded-full bg-white border border-gray-200 text-gray-500 transition-all duration-300 hover:text-gray-900 hover:border-black hover:bg-gray-50 hover:scale-110`}
-                                >
-                                    <social.icon size={20} />
-                                </a>
-                            ))}
-                        </div>
-
-                        {/* Copyright */}
-                        <div className="text-center space-y-2">
-                            <p className="text-gray-500 text-sm">
-                                © {new Date().getFullYear()} Deekshith Dade. All rights reserved.
-                            </p>
-                            <p className="text-gray-600 text-xs flex items-center justify-center gap-1">
-                                Made with <Heart size={12} className="text-gray-500" />
-                                using Next.js & Tailwind CSS
-                            </p>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <footer className="mt-auto border-t border-white/10">
+      <div className="mx-auto max-w-3xl px-6 py-8">
+        <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+          <div className="flex items-center gap-3">
+            <Image src="/images/birdman.jpg" alt="Birdman" width={40} height={40} className="rounded-full" />
+            <div className="flex flex-col">
+              <p className="text-sm tracking-[0.2em]">Deekshith Dade</p>
+              <a
+                href="mailto:deekshithreddy1300@gmail.com"
+                className="text-xs text-white/60 hover:text-white/80"
+              >
+                deekshithreddy1300@gmail.com
+              </a>
             </div>
-        </footer>
-    );
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex gap-3">
+              {socials.map(({ icon: Icon, url, label }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-white/15 p-2 text-white/70 transition hover:text-white"
+                  aria-label={label}
+                >
+                  <Icon size={16} />
+                </a>
+              ))}
+            </div>
+            <p className="text-xs uppercase tracking-[0.3em] text-white/40">
+              © {new Date().getFullYear()}
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }
+
 export default Climax;
