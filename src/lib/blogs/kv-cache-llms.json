@@ -3,10 +3,10 @@
   "title": "KV Cache in Large Language Models",
   "date": "2025-11-18",
   "readTime": "12 min",
-  "github": "https://github.com/Deekshith-Dade/llms/tree/02ccde66f97b626372f3c1d2c4154a161b239528/src/llms/kv_cache",
+  "github": "https://github.com/deekshithb/kv-cache-mlx",
   "excerpt": "A practical guide to understanding and implementing KV Cache in large language models. Implementation is using mlx framework, a NumPy-like array framework optimized for Apple Silicon's Unified Memory Architecture.",
   "tags": ["LLMs", "KV Cache", "MLX", "Apple Silicon"],
-  "coverImage": "/images/kv-cache.png",
+  "coverImage": "/blog-images/kv_cache_1117/attn_demo4.webp",
   "references": [
     {
       "label": "Efficiently Scaling Transformer Inference",
@@ -50,7 +50,7 @@
     },
     {
       "type": "image",
-      "src": "/blog-images/attn_main.webp",
+      "src": "/blog-images/kv_cache_1117/attn_main.webp",
       "alt": "A very high level attention diagram",
       "caption": "Attention block on a high level, which shows the matrices of interest for us!"
     },
@@ -98,7 +98,7 @@
     },
     {
       "type": "image",
-      "src": "/blog-images/attn_demo1.webp"
+      "src": "/blog-images/kv_cache_1117/attn_demo1.webp"
     },
     {
       "type": "paragraph",
@@ -111,7 +111,7 @@
     },
     {
       "type": "image",
-      "src": "/blog-images/attn_demo2.webp"
+      "src": "/blog-images/kv_cache_1117/attn_demo2.webp"
     },
     {
       "type": "paragraph",
@@ -272,7 +272,7 @@
     },
     {
       "type": "image",
-      "src": "/blog-images/attn_demo3.webp",
+      "src": "/blog-images/kv_cache_1117/attn_demo3.webp",
       "caption": "Q, K, V matrices to demonstrate redundant calculations, follow red arrows.",
       "alt": "Q, K, V matrices to demonstrate redundant calculations"
     },
@@ -286,7 +286,7 @@
     },
     {
       "type": "image",
-      "src": "/blog-images/attn_demo4.webp",
+      "src": "/blog-images/kv_cache_1117/attn_demo4.webp",
       "caption": "Matrices to observe, which can be saved and computed",
       "alt": "Matrices to observe, which can be saved and computed"
     },
