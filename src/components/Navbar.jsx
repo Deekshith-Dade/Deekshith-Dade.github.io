@@ -25,6 +25,18 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Prevent body scroll when mobile menu is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const linkClass =
     "relative uppercase tracking-[0.35em] text-[0.65rem] text-white/60 transition hover:text-white pb-3 after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-px after:bg-white after:scale-x-0 hover:after:scale-x-100 after:origin-center after:transition";
 
@@ -32,7 +44,11 @@ export default function Navbar() {
     <nav
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b border-white/5",
-        scrolled ? "bg-[var(--night)]/95 backdrop-blur-md" : "bg-[var(--night)]/80"
+        isOpen
+          ? "bg-[var(--night)] backdrop-blur-md"
+          : scrolled
+            ? "bg-[var(--night)]/95 backdrop-blur-md"
+            : "bg-[var(--night)]/80"
       )}
     >
       <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
@@ -63,13 +79,13 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="border-t border-white/10 bg-[var(--night)]/95 px-6 py-6 md:hidden">
+        <div className="border-t border-white/10 bg-[var(--night)] backdrop-blur-md px-6 py-6 md:hidden">
           <div className="flex flex-col gap-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm uppercase tracking-[0.3em] text-white/70 hover:text-white"
+                className="rounded-lg bg-white/5 px-4 py-3 text-sm uppercase tracking-[0.3em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}

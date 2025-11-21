@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Climax from "@/components/Climax";
 import Link from "next/link";
+import ViewCounter from "@/components/ViewCounter";
 import { getBlogs } from "@/lib/blogs";
 import { Calendar, Clock, BookOpen, Github } from "lucide-react";
 
@@ -39,6 +40,7 @@ function BlogPage() {
                   <Clock size={14} />
                   {post.readTime}
                 </span>
+                <ViewCounter slug={post.slug} compact />
               </div>
               <Link href={`/blog/${post.slug}`} className="mt-4 block underline-offset-4 hover:underline">
                 <h2 className="text-2xl font-medium">{post.title}</h2>
