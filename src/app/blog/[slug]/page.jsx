@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Climax from "@/components/Climax";
 import BlogRenderer from "@/components/BlogRenderer";
+import { extractInlineReferences } from "@/lib/blogUtils";
 import ViewCounter from "@/components/ViewCounter";
 import { getBlogs, getBlogBySlug } from "@/lib/blogs";
 import { Github } from "lucide-react";
@@ -19,6 +20,18 @@ export default function BlogPost({ params }) {
     if (!post) {
         notFound();
     }
+
+    // Extract inline references from blog content
+    const inlineRefs = extractInlineReferences(post.blocks);
+
+    // Combine: inline references first (in order of appearance), then JSON references
+    // Deduplicate by URL
+    const combinedRefs = [...inlineRefs];
+    (post.references || []).forEach((ref) => {
+        if (!combinedRefs.find(r => r.url === ref.url)) {
+            combinedRefs.push(ref);
+        }
+    });
 
     return (
         <div className="flex min-h-screen flex-col bg-[var(--night)] text-white">
@@ -47,20 +60,26 @@ export default function BlogPost({ params }) {
                 </header>
 
                 <article className="mx-auto mt-16 max-w-3xl space-y-12">
-                    <BlogRenderer blocks={post.blocks} />
+                    <BlogRenderer blocks={post.blocks} allReferences={combinedRefs} />
 
-                    {post.references?.length > 0 && (
+                    {combinedRefs.length > 0 && (
                         <section className="rounded-3xl border border-white/10 p-6">
                             <p className="text-xs uppercase tracking-[0.35em] text-white/50">References</p>
-                            <ul className="mt-4 space-y-3 text-sm text-white/70">
-                                {post.references.map((ref) => (
-                                    <li key={ref.url}>
-                                        <a href={ref.url} target="_blank" rel="noreferrer" className="underline decoration-dotted underline-offset-4">
+                            <ol className="mt-4 space-y-3 text-sm text-white/70 list-none">
+                                {combinedRefs.map((ref, idx) => (
+                                    <li key={ref.url} id={`ref-${idx + 1}`} className="flex gap-3">
+                                        <span className="text-white/40 font-medium shrink-0">[{idx + 1}]</span>
+                                        <a
+                                            href={ref.url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="underline decoration-dotted underline-offset-4 hover:text-white transition-colors"
+                                        >
                                             {ref.label}
                                         </a>
                                     </li>
                                 ))}
-                            </ul>
+                            </ol>
                         </section>
                     )}
                 </article>

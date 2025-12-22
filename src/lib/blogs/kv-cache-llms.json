@@ -3,7 +3,7 @@
   "title": "KV Cache in Large Language Models",
   "date": "2025-11-18",
   "readTime": "12 min",
-  "github": "https://github.com/deekshithb/kv-cache-mlx",
+  "github": "https://github.com/Deekshith-Dade/llms/tree/main/src/llms/kv_cache",
   "excerpt": "A practical guide to understanding and implementing KV Cache in large language models. Implementation is using mlx framework, a NumPy-like array framework optimized for Apple Silicon's Unified Memory Architecture.",
   "tags": ["LLMs", "KV Cache", "MLX", "Apple Silicon"],
   "coverImage": "/blog-images/kv_cache_1117/attn_demo4.webp",

@@ -2,7 +2,11 @@
 import Image from "next/image";
 import { Highlight } from "prism-react-renderer";
 import { cn } from "@/lib/utils";
-import { createElement, useState, useEffect } from "react";
+import { createElement, useState, useEffect, useMemo } from "react";
+import { extractInlineReferences } from "@/lib/blogUtils";
+
+// Re-export for backwards compatibility
+export { extractInlineReferences };
 
 // Mature, minimal dark theme with high contrast
 const darkTheme = {
@@ -75,8 +79,8 @@ const darkTheme = {
   ],
 };
 
-// Parse inline markdown-like formatting: **bold**, *italic*, `code`, ==highlight==
-function parseInlineFormatting(text) {
+// Parse inline markdown-like formatting: **bold**, *italic*, `code`, ==highlight==, [^label](url)
+function parseInlineFormatting(text, refNumberMap = {}) {
   if (!text) return [];
 
   const parts = [];
@@ -84,6 +88,7 @@ function parseInlineFormatting(text) {
 
   // Regex patterns in order of precedence (most specific first)
   const patterns = [
+    { regex: /\[\^([^\]]+)\]\(([^)]+)\)/g, type: 'reference' }, // [^label](url) - inline reference
     { regex: /\*\*([^*]+)\*\*/g, type: 'bold' },           // **bold**
     { regex: /__([^_]+)__/g, type: 'bold' },               // __bold__
     { regex: /==([^=]+)==/g, type: 'highlight' },          // ==highlight==
@@ -98,13 +103,18 @@ function parseInlineFormatting(text) {
     let match;
     regex.lastIndex = 0; // Reset regex
     while ((match = regex.exec(text)) !== null) {
-      matches.push({
+      const matchData = {
         start: match.index,
         end: match.index + match[0].length,
         content: match[1],
         type,
         fullMatch: match[0]
-      });
+      };
+      // For references, also capture the URL
+      if (type === 'reference') {
+        matchData.url = match[2];
+      }
+      matches.push(matchData);
     }
   });
 
@@ -162,6 +172,22 @@ function parseInlineFormatting(text) {
           <mark key={key} className="bg-yellow-500/30 text-yellow-100 px-1 rounded">
             {match.content}
           </mark>
+        );
+        break;
+      case 'reference':
+        // Get the reference number from the map (based on URL)
+        const refNum = refNumberMap[match.url];
+        elements.push(
+          <a
+            key={key}
+            href={match.url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-400 hover:text-blue-300 transition-colors no-underline"
+            title={match.content}
+          >
+            <sup className="text-xs font-medium">[{refNum}]</sup>
+          </a>
         );
         break;
       default:
@@ -324,8 +350,17 @@ function ImageLightbox({ src, alt, caption, onClose }) {
   );
 }
 
-export default function BlogRenderer({ blocks }) {
+export default function BlogRenderer({ blocks, allReferences = [] }) {
   const [lightboxImage, setLightboxImage] = useState(null);
+
+  // Build a map from URL to reference number for inline references
+  const refNumberMap = useMemo(() => {
+    const map = {};
+    allReferences.forEach((ref, idx) => {
+      map[ref.url] = idx + 1;
+    });
+    return map;
+  }, [allReferences]);
 
   return (
     <>
@@ -350,7 +385,7 @@ export default function BlogRenderer({ blocks }) {
             case "paragraph":
               return (
                 <p key={index} className="text-base leading-7 text-white/80">
-                  {parseInlineFormatting(block.text)}
+                  {parseInlineFormatting(block.text, refNumberMap)}
                 </p>
               );
             case "code":
@@ -413,7 +448,7 @@ export default function BlogRenderer({ blocks }) {
                   )}
                 >
                   <p className="text-xs uppercase tracking-[0.35em] text-white/50">{block.title}</p>
-                  <p className="mt-3 text-sm text-white/80">{parseInlineFormatting(block.text)}</p>
+                  <p className="mt-3 text-sm text-white/80">{parseInlineFormatting(block.text, refNumberMap)}</p>
                 </div>
               );
             case "annotation":
@@ -427,14 +462,17 @@ export default function BlogRenderer({ blocks }) {
                       : "bg-white/10 text-white/90"
                   )}
                 >
-                  {parseInlineFormatting(block.text)}
+                  {parseInlineFormatting(block.text, refNumberMap)}
                 </p>
               );
             case "image":
+              // If width is specified and less than full width, center the image
+              const hasCustomWidth = block.width && block.width < 960;
               return (
-                <figure key={index} className="space-y-3">
+                <figure key={index} className={cn("space-y-3", hasCustomWidth && "flex flex-col items-center")}>
                   <div
                     className="overflow-hidden rounded-3xl border border-white/10 bg-[var(--night-muted)] cursor-pointer hover:opacity-90 transition-opacity"
+                    style={hasCustomWidth ? { maxWidth: block.width } : undefined}
                     onClick={() => setLightboxImage({ src: block.src, alt: block.alt, caption: block.caption })}
                   >
                     <Image
@@ -446,14 +484,14 @@ export default function BlogRenderer({ blocks }) {
                       priority={false}
                     />
                   </div>
-                  {block.caption && <figcaption className="text-sm text-white/50">{block.caption}</figcaption>}
+                  {block.caption && <figcaption className={cn("text-sm text-white/50", hasCustomWidth && "text-center")}>{block.caption}</figcaption>}
                 </figure>
               );
             case "quote":
               return (
                 <figure key={index} className="rounded-3xl border border-white/10 bg-white/5 p-6 text-white/80">
                   <blockquote className="text-lg italic leading-relaxed">
-                    &ldquo;{parseInlineFormatting(block.text)}&rdquo;
+                    &ldquo;{parseInlineFormatting(block.text, refNumberMap)}&rdquo;
                   </blockquote>
                   {block.cite && (
                     <figcaption className="mt-4 text-sm uppercase tracking-[0.35em] text-white/60">
@@ -473,7 +511,7 @@ export default function BlogRenderer({ blocks }) {
                   )}>
                     {block.items?.map((item, idx) => (
                       <li key={idx} className="leading-relaxed pl-2">
-                        {parseInlineFormatting(item)}
+                        {parseInlineFormatting(item, refNumberMap)}
                       </li>
                     ))}
                   </ListTag>
