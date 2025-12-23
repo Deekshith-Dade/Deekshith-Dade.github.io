@@ -123,3 +123,32 @@ img {
     transform: translateY(0);
   }
 }
+
+/* Lightbox animations */
+.animate-lightbox-fade-in {
+  animation: lightboxFadeIn 0.3s ease-out both;
+}
+
+.animate-lightbox-scale-in {
+  animation: lightboxScaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes lightboxFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes lightboxScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
