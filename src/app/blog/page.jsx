@@ -2,11 +2,12 @@ import Navbar from "@/components/Navbar";
 import Climax from "@/components/Climax";
 import Link from "next/link";
 import ViewCounter from "@/components/ViewCounter";
-import { getBlogs } from "@/lib/blogs";
+import ClientDate from "@/components/ClientDate";
+import { getAllPosts } from "@/lib/mdx";
 import { Calendar, Clock, BookOpen, Github } from "lucide-react";
 
 function BlogPage() {
-  const blogs = getBlogs();
+  const blogs = getAllPosts();
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--night)] text-white">
@@ -30,11 +31,7 @@ function BlogPage() {
                 <span>{post.tags?.[0]}</span>
                 <span className="flex items-center gap-2 text-white/50">
                   <Calendar size={14} />
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
+                  <ClientDate date={post.date} />
                 </span>
                 <span className="flex items-center gap-2 text-white/50">
                   <Clock size={14} />
