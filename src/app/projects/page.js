@@ -1,25 +1,21 @@
-"use client";
+import fs from "fs";
+import path from "path";
 import Navbar from "@/components/Navbar";
 import ProjectItem from "@/components/ProjectItem";
 import Climax from "@/components/Climax";
-import { useState, useEffect } from "react";
 import { FolderOpen } from "lucide-react";
 
-function Project() {
-  const [projects, setProjects] = useState([]);
+export const metadata = {
+  title: "Projects",
+  description:
+    "A curated archive of experiments and deployments across contrastive learning, agentic tooling, and applied computer vision.",
+};
 
-  useEffect(() => {
-    fetch("/project.json")
-      .then((response) => response.json())
-      .then((data) =>
-        setProjects(
-          data.sort((a, b) => {
-            return a.s_no - b.s_no;
-          })
-        )
-      )
-      .catch((error) => console.error("Error fetching projects:", error));
-  }, []);
+async function Project() {
+  const filePath = path.join(process.cwd(), "public", "project.json");
+  const projects = JSON.parse(fs.readFileSync(filePath, "utf8")).sort(
+    (a, b) => a.s_no - b.s_no
+  );
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--night)] text-white">
@@ -38,11 +34,6 @@ function Project() {
         </section>
 
         <section className="mx-auto mt-16 max-w-6xl space-y-8">
-          {projects.length === 0 && (
-            <div className="rounded-[32px] border border-white/10 p-10 text-center text-white/50">
-              Loading work catalogue…
-            </div>
-          )}
           {projects.map((project) => (
             <ProjectItem key={project.id} project={project} />
           ))}

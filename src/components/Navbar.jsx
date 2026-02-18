@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -16,6 +17,10 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,8 +42,13 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
-  const linkClass =
-    "relative uppercase tracking-[0.35em] text-[0.65rem] text-white/60 transition hover:text-white pb-3 after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-px after:bg-white after:scale-x-0 hover:after:scale-x-100 after:origin-center after:transition";
+  const linkClass = (href) =>
+    cn(
+      "relative uppercase tracking-[0.35em] text-[0.65rem] transition pb-3 after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-px after:bg-white after:origin-center after:transition",
+      isActive(href)
+        ? "text-white after:scale-x-100"
+        : "text-white/60 hover:text-white after:scale-x-0 hover:after:scale-x-100"
+    );
 
   return (
     <nav
@@ -63,7 +73,7 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className={linkClass}>
+            <Link key={item.href} href={item.href} className={linkClass(item.href)}>
               {item.label}
             </Link>
           ))}
@@ -85,7 +95,12 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-lg bg-white/5 px-4 py-3 text-sm uppercase tracking-[0.3em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                className={cn(
+                  "rounded-lg px-4 py-3 text-sm uppercase tracking-[0.3em] transition-colors",
+                  isActive(item.href)
+                    ? "bg-white/10 text-white"
+                    : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+                )}
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}

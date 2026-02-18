@@ -1,18 +1,11 @@
-"use client";
-import { useState, useEffect } from "react";
+import fs from "fs";
+import path from "path";
 import Link from "next/link";
 
-function Projects() {
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    fetch("/project.json")
-      .then((response) => response.json())
-      .then((data) => setProjects(data))
-      .catch((error) => console.error("Error fetching projects:", error));
-  }, []);
-
-  const selection = projects.slice(0, 3);
+async function Projects() {
+  const filePath = path.join(process.cwd(), "public", "project.json");
+  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const selection = data.sort((a, b) => a.s_no - b.s_no).slice(0, 3);
 
   return (
     <section className="mt-16 px-6">

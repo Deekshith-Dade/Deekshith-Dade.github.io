@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "Blog",
+  description:
+    "Notes from ongoing research around agentic AI and computer vision.",
+};
+
 import Navbar from "@/components/Navbar";
 import Climax from "@/components/Climax";
 import Link from "next/link";

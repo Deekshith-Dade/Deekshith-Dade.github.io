@@ -1,26 +1,24 @@
-"use client";
+import fs from 'fs';
+import path from 'path';
 import Navbar from '@/components/Navbar'
 import Experience from '@/components/Experience';
 import Climax from "@/components/Climax";
 import React from 'react'
-import { useState, useEffect } from 'react'
 import { User, Briefcase, GraduationCap, Code, Database, Cloud } from 'lucide-react';
 
-function Page() {
-  const [experience, setExperience] = useState([]);
-  const [education, setEducation] = useState([]);
+export const metadata = {
+  title: "About",
+  description:
+    "Deekshith Dade — ML engineer with 3+ years of experience in deep learning and software development.",
+};
 
-  useEffect(() => {
-    fetch('./experience.json')
-      .then(response => response.json())
-      .then(data => setExperience(data))
-      .catch(error => console.error('Error fetching experience:', error));
-
-    fetch('./education.json')
-      .then(response => response.json())
-      .then(data => setEducation(data))
-      .catch(error => console.error('Error fetching education:', error));
-  }, []);
+async function Page() {
+  const experience = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), "public", "experience.json"), "utf8")
+  );
+  const education = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), "public", "education.json"), "utf8")
+  );
 
   const skills = [
     {

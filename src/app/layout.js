@@ -8,8 +8,17 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
-  title: "Deekshith Dade",
-  description: "Deekshith Dade's personal website",
+  title: { default: "Deekshith Dade", template: "%s | Deekshith Dade" },
+  description:
+    "ML engineer and researcher specialising in contrastive learning, computer vision, and agentic AI systems.",
+  metadataBase: new URL("https://deekshith.me"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Deekshith Dade",
+  },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }) {

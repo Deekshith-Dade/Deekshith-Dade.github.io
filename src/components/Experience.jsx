@@ -7,7 +7,7 @@ import SmallExperience from '@/components/SmallExperience';
 function Experience({ open, children, title, company, duration, icon }) {
 
     const [isOpen, setIsOpen] = useState(open);
-    const ref = useRef < HTMLDivElement > (null);
+    const ref = useRef(null);
     const [height, setHeight] = useState(0);
 
     useEffect(() => {

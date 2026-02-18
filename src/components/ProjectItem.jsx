@@ -11,16 +11,10 @@ function ProjectItem({ project }) {
             <span>{project.category}</span>
             <span className="text-white/30">{project.date}</span>
           </div>
-          <h3 className="text-2xl font-medium">{project.title}</h3>
-          <p className="text-sm text-white/65">
-            {project.description ||
-              "Field-tested system that combines research notebooks, data tooling, and reliable deployment practices."}
-          </p>
+          <Link href={`/projects/${project.id}`} className="hover:underline underline-offset-4">
+            <h3 className="text-2xl font-medium">{project.title}</h3>
+          </Link>
           <div className="flex flex-wrap gap-4 text-xs uppercase tracking-[0.35em] text-white/50">
-            <Link href={`/projects/${project.id}`} className="flex items-center gap-2 text-white hover:text-white">
-              Overview
-              <ExternalLink size={14} />
-            </Link>
             {project.github && (
               <a
                 href={project.github}

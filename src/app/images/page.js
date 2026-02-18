@@ -1,22 +1,14 @@
-"use client";
-import { useState } from "react";
-import Masonry from "react-masonry-css";
-import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Climax from "@/components/Climax";
-import ImageLightbox from "@/components/ImageLightbox";
+import GalleryGrid from "@/components/GalleryGrid";
 import { galleryImages } from "@/lib/content";
 
+export const metadata = {
+  title: "Images",
+  description: "Minimal captures from travels and quiet moments.",
+};
+
 function Page() {
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const breakpointColumnsObj = {
-    default: 4,
-    1280: 3,
-    900: 2,
-    600: 1,
-  };
-
   return (
     <div className="flex min-h-screen flex-col bg-[var(--night)] text-white">
       <Navbar />
@@ -30,37 +22,10 @@ function Page() {
         </section>
 
         <section className="mt-16">
-          <Masonry
-            breakpointCols={breakpointColumnsObj}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {galleryImages.map((image) => (
-              <div
-                key={image.src}
-                className="group cursor-pointer overflow-hidden rounded-[24px] border border-white/10 bg-[var(--night-muted)] transition-all duration-300 hover:border-white/20 hover:shadow-lg hover:shadow-white/5"
-                onClick={() => setSelectedImage(image)}
-              >
-                <Image
-                  className="w-full object-cover opacity-80 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.02]"
-                  src={image.src}
-                  alt={image.alt}
-                  width={image.width}
-                  height={image.height}
-                />
-              </div>
-            ))}
-          </Masonry>
+          <GalleryGrid images={galleryImages} />
         </section>
       </main>
       <Climax />
-
-      {selectedImage && (
-        <ImageLightbox
-          image={selectedImage}
-          onClose={() => setSelectedImage(null)}
-        />
-      )}
     </div>
   );
 }

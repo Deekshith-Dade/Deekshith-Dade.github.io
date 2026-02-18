@@ -8,6 +8,25 @@ import { getPostBySlug, renderMDX, getAllPosts as getAllMDXPosts } from "@/lib/m
 import { getBlogs, getBlogBySlug } from "@/lib/blogs";
 import { Github } from "lucide-react";
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug) ?? getBlogBySlug(slug);
+  if (!post) return {};
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      publishedTime: post.date,
+      tags: post.tags,
+      images: post.coverImage ? [{ url: post.coverImage }] : [],
+    },
+    twitter: { title: post.title, description: post.excerpt },
+  };
+}
+
 export async function generateStaticParams() {
   const mdxPosts = getAllMDXPosts();
   const jsonPosts = getBlogs();
